@@ -72,16 +72,25 @@ header p{font-size:13px;opacity:.85}
 .upload-area small{color:#aaa;font-size:12px}
 #almFile{display:none}
 /* ── Upload collapsed state ── */
-.upload-bar{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 16px;background:#f0f7ff;border:1px solid #c8e0ff;border-radius:8px;flex:0 0 230px;min-height:104px}
-.upload-bar .ub-meta{display:flex;align-items:center;gap:10px;min-width:0}
-.upload-bar .ub-icon{font-size:22px;flex-shrink:0}
-.upload-bar .ub-name{font-size:13px;font-weight:700;color:#0066cc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.upload-bar .ub-change{width:150px;height:34px;background:#0066cc;color:#fff;border:none;border-radius:5px;padding:0 12px;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;align-self:flex-start}
-.upload-bar .ub-change:hover{background:#0055aa}
+.upload-bar{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;padding:14px 16px;background:#fff;border:1px solid #d9e8ff;border-radius:8px;flex:0 0 360px;min-height:104px}
+.upload-bar .ub-drop{flex:1;min-height:86px;border:2px dashed #ccc;border-radius:8px;background:#fafafa;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all .2s;padding:14px}
+.upload-bar .ub-drop:hover{border-color:#8bbcff;background:#f4f9ff}
+.upload-bar .ub-drop-icon{font-size:28px;line-height:1;margin-bottom:6px;color:#777}
+.upload-bar .ub-drop-title{font-size:13px;font-weight:700;color:#333;margin-bottom:2px}
+.upload-bar .ub-drop-sub{font-size:11px;color:#888}
+.upload-bar .ub-meta{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%;align-self:flex-start;background:#e8f4fd;color:#1a6fa8;border-radius:20px;padding:5px 12px}
+.upload-bar .ub-icon{font-size:13px;flex-shrink:0;line-height:1}
+.upload-bar .ub-name{font-size:12px;font-weight:600;color:#1a6fa8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.manual-map-actions{display:flex;align-items:center;gap:10px}
+.manual-map-cancel{background:#fff;color:#555;border:1px solid #ddd;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer}
+.manual-map-cancel:hover{background:#f5f5f5;border-color:#bbb}
 .step1-upload-row{display:flex;align-items:stretch;gap:16px;min-width:0}
 .step1-upload-row #summary{display:flex;flex:1;min-width:0}
 .summary-box{background:#fff;border:1px solid #c8e0ff;border-radius:8px;padding:14px;margin-top:0;flex:1;display:flex;flex-direction:column;justify-content:center}
-.summary-box h3{color:#0066cc;font-size:13px;margin-bottom:12px}
+.summary-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.summary-box h3{color:#0066cc;font-size:13px;margin:0;min-width:0}
+.summary-map-btn{height:28px;background:#fff;color:#0066cc;border:1px solid #bdd7ff;border-radius:999px;padding:0 11px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:5px;flex-shrink:0}
+.summary-map-btn:hover{background:#e8f4fd;border-color:#8bbcff}
 .summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .s-item{text-align:left;min-width:0;background:#f0f7ff;border:1px solid #d7e8ff;border-radius:8px;padding:12px 14px}
 .s-item .val{font-size:25px;line-height:1;font-weight:800;color:#0066cc}
@@ -117,7 +126,9 @@ tbody tr:nth-child(even) td.col-sticky-r{background:#fafafa}
 tbody tr:hover td.col-sticky-r{background:#fff5f5}
 /* seq column */
 td.col-seq,th.col-seq{min-width:36px;text-align:center;font-size:11px;color:#999}
+td.col-product-type,th.col-product-type{min-width:180px;width:180px}
 tbody td input,tbody td select{width:100%;border:1px solid #e0e0e0;border-radius:3px;padding:4px 6px;font-size:11px;font-family:Arial}
+tbody td select{padding-right:24px;text-overflow:ellipsis}
 tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .f-qty{min-width:64px}
 .fetch-btn{background:#eef5ff;color:#0a58ca;border:1px solid #bdd7ff;border-radius:5px;padding:4px 9px;cursor:pointer;font-size:11px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;height:26px}
@@ -128,6 +139,7 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .b-pend{background:#fff3cd;color:#856404}
 .b-load{background:#cfe2ff;color:#0a58ca}
 .b-ok{background:#d1e7dd;color:#0f5132}
+.b-id{background:#fff3cd;color:#856404}
 .b-err{background:#f8d7da;color:#842029}
 .b-na{background:#e2e3e5;color:#495057}
 .b-cache{background:#e0d7f5;color:#4b2d8a}
@@ -146,7 +158,16 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .sn-group-arrow.open{transform:rotate(90deg)}
 .sn-group-tags{display:flex;flex-wrap:wrap;gap:5px;padding:8px 10px 4px;display:none}
 .sn-group-tags.open{display:flex}
-.sn-tag{background:#f0f0f0;border:1px solid #ddd;border-radius:4px;padding:3px 9px;font-size:11px;font-family:monospace;color:#444}
+.sn-empty{font-size:11px;color:#999;font-style:italic}
+.sn-edit{width:260px;max-width:100%;border:1px solid #ddd;border-radius:4px;padding:4px 8px;font-size:11px}
+.sn-tag{background:#f0f0f0;border:1px solid #ddd;border-radius:4px;padding:3px 6px 3px 9px;font-size:11px;font-family:monospace;color:#444;display:inline-flex;align-items:center;gap:6px;min-height:20px}
+.sn-tag-text{cursor:text}
+.sn-tag-input{width:92px;border:1px solid #bdd7ff;border-radius:3px;padding:2px 5px;font-size:11px;font-family:monospace}
+.sn-del{display:none;border:none;background:#dc3545;color:#fff;border-radius:50%;width:16px;height:16px;line-height:14px;font-size:11px;cursor:pointer;padding:0}
+.sn-tag:hover .sn-del{display:inline-block}
+.sn-add-wrap{display:inline-flex;align-items:center;gap:5px}
+.sn-add-btn{border:1px solid #bdd7ff;background:#eef5ff;color:#0a58ca;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer}
+.sn-add-btn:hover{background:#dfeeff}
 .gen-wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:6px 0}
 .gen-copy{flex:1;min-width:0}
 .gen-copy h3{font-size:18px;font-weight:700;color:#333;margin-bottom:8px}
@@ -177,11 +198,19 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .upload2-box .icon{font-size:32px;display:block;margin-bottom:8px}
 .upload2-box h3{font-size:14px;font-weight:700;margin-bottom:6px;color:#333}
 .upload2-box small{color:#888;font-size:12px}
+.upload2-status{margin-top:10px;border:1px solid #d9e8ff;background:#f4f9ff;border-radius:8px;padding:8px 10px;font-size:12px;color:#475467;display:none}
+.upload2-status.ok{display:block;border-color:#b7dfc6;background:#f3fbf6;color:#155724}
+.upload2-status.warn{display:block;border-color:#ffd88a;background:#fffaf0;color:#856404}
+.upload2-status .status-line{display:flex;justify-content:space-between;gap:10px;margin:2px 0}
+.upload2-status .status-main{font-weight:700;color:#333}
 .file-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:26px}
 .chip{background:#e8f4fd;color:#1a6fa8;border-radius:20px;padding:3px 12px;font-size:12px;display:flex;align-items:center;gap:6px}
 .chip .rm{cursor:pointer;color:#999;font-weight:700;font-size:14px;line-height:1}
 .chip .rm:hover{color:#cc0000}
-.analyze-wrap{text-align:center;padding:10px 0}
+.analyze-wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:6px 0}
+.analyze-copy{flex:1;min-width:0}
+.analyze-copy h3{font-size:18px;font-weight:700;color:#333;margin-bottom:8px}
+.analyze-copy p{font-size:13px;line-height:1.6;color:#667085;margin:0}
 .analyze-btn{background:#cc0000;color:#fff;border:none;border-radius:8px;padding:14px 40px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
 .analyze-btn:hover{background:#aa0000}
 .analyze-btn:disabled{background:#ccc;cursor:not-allowed}
@@ -196,6 +225,9 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .sc-ok{background:#d4edda;color:#155724}
 .sc-pend{background:#fff3cd;color:#856404}
 .sc-rate{background:#cce5ff;color:#004085}
+.analysis-summary{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 16px}
+.analysis-pill{border:1px solid #d9e8ff;background:#f4f9ff;color:#344054;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:600}
+.analysis-pill.warn{border-color:#ffd88a;background:#fffaf0;color:#856404}
 
 .filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .filter-bar label{font-size:13px;font-weight:600;color:#555}
@@ -205,14 +237,23 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
 .export-btn2:hover{background:#aa0000}
 
 .res-table{width:100%;border-collapse:collapse;font-size:13px}
-.res-table th{background:#cc0000;color:#fff;padding:9px 12px;text-align:left;white-space:nowrap;position:sticky;top:0}
+.res-table th{background:#fff3cd;color:#5f4300;padding:9px 12px;text-align:left;white-space:nowrap;position:sticky;top:0;border-bottom:1px solid #ffd36b}
 .res-table td{padding:8px 12px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
 .res-table tr:hover td{background:#fafafa}
-.res-table tr.row-ok td{background:#f6fff8}
-.res-table tr.row-pend td{background:#fffdf0}
+.res-table .res-sticky-idx{position:sticky;left:0;z-index:2;min-width:42px;width:42px;text-align:center}
+.res-table .res-sticky-sn{position:sticky;left:42px;z-index:2;min-width:150px;width:150px}
+.res-table th.res-sticky-idx,.res-table th.res-sticky-sn{z-index:4}
+.res-table td.res-sticky-idx,.res-table td.res-sticky-sn{background:#fff}
+.res-table td.res-sticky-idx{color:#aaa}
+.res-table tr:hover td.res-sticky-idx,.res-table tr:hover td.res-sticky-sn{background:#fafafa}
+.file-cell{max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#667085;font-size:12px}
 .tag-ok{display:inline-block;background:#28a745;color:#fff;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700;white-space:nowrap}
 .tag-pend{display:inline-block;background:#ffc107;color:#333;border-radius:12px;padding:2px 10px;font-size:11px;font-weight:700;white-space:nowrap}
-.res-wrap{max-height:520px;overflow-y:auto;border:1px solid #eee;border-radius:8px}
+.res-wrap{max-height:520px;overflow:auto;border:1px solid #eee;border-radius:8px;-webkit-overflow-scrolling:touch}
+.res-wrap::-webkit-scrollbar{height:5px;width:5px}
+.res-wrap::-webkit-scrollbar-track{background:transparent}
+.res-wrap::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+.res-wrap::-webkit-scrollbar-thumb:hover{background:#999}
 
 /* ── Floating Generate Button (disabled) ── */
 .fab-gen{display:none!important}
@@ -285,11 +326,15 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
   <!-- Post-upload row: file info on left, stats on right -->
   <div id="step1UploadRow" class="step1-upload-row hidden">
     <div id="uploadBar" class="upload-bar hidden">
+      <div class="ub-drop" onclick="document.getElementById('almFile').click()">
+        <span class="ub-drop-icon">&#128196;</span>
+        <div class="ub-drop-title">Returned Asset List</div>
+        <div class="ub-drop-sub">Click to replace file</div>
+      </div>
       <div class="ub-meta">
         <span class="ub-icon">&#128196;</span>
         <span class="ub-name" id="uploadBarName"></span>
       </div>
-      <button class="ub-change" onclick="document.getElementById('almFile').click()">&#128260; Change File</button>
     </div>
     <div id="summary" style="flex:1"></div>
   </div>
@@ -307,21 +352,28 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
       <label style="font-size:12px;font-weight:600;color:#555">Sheet:</label>
       <select id="mm_sheet" style="margin-left:8px;border:1px solid #ddd;border-radius:4px;padding:4px 8px;font-size:13px"></select>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px">
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px">
       <div>
         <label style="font-size:12px;font-weight:600;color:#555">Serial Number column <span style="color:#cc0000">*</span></label><br>
         <select id="mm_sn" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— select —</option></select>
       </div>
       <div>
-        <label style="font-size:12px;font-weight:600;color:#555">Model / Part Number column <span style="color:#cc0000">*</span></label><br>
+        <label style="font-size:12px;font-weight:600;color:#555">Model / Part Number column</label><br>
         <select id="mm_modelpn" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— select —</option></select>
       </div>
       <div>
         <label style="font-size:12px;font-weight:600;color:#555">Account / Customer Name column</label><br>
         <select id="mm_account" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— (none) —</option></select>
       </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#555">Status column</label><br>
+        <select id="mm_status" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— (none) —</option></select>
+      </div>
     </div>
-    <button onclick="applyManualMapping()" style="background:#cc0000;color:#fff;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer">&#9654; Apply Mapping</button>
+    <div class="manual-map-actions">
+      <button onclick="applyManualMapping()" style="background:#cc0000;color:#fff;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer">&#9654; Apply Mapping</button>
+      <button class="manual-map-cancel" onclick="cancelManualMapping()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -421,7 +473,7 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
       <thead>
         <tr>
           <th class="col-sticky-l col-seq" style="left:0">#</th>
-          <th class="col-sticky-l" style="left:36px;min-width:130px">Product Type</th>
+          <th class="col-sticky-l col-product-type" style="left:36px">Product Type</th>
           <th style="min-width:80px">Manufacturer</th>
           <th style="min-width:200px">Model / Part Number</th>
           <th style="min-width:70px">Qty</th>
@@ -485,6 +537,7 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
       </div>
       <input type="file" id="puFiles" accept=".xlsx" multiple style="display:none">
       <div class="file-chips" id="puChips"></div>
+      <div class="upload2-status" id="puStatus"></div>
     </div>
     <!-- Collection Reports -->
     <div>
@@ -496,22 +549,28 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
       </div>
       <input type="file" id="crFiles" accept=".xlsx" multiple style="display:none">
       <div class="file-chips" id="crChips"></div>
+      <div class="upload2-status" id="crStatus"></div>
     </div>
   </div>
 </div>
 
 <!-- Analyze Button -->
 <div class="card" id="analyzeCard" style="display:none">
+  <h2><span class="step-badge" style="background:#cc0000">2</span>Analyze Recovery Status</h2>
   <div class="analyze-wrap">
+    <div class="analyze-copy">
+      <h3>Compare requested assets against collected assets.</h3>
+      <p id="analyzeHint">Pick-up Request serial numbers are the requested baseline. Collection Report serial numbers confirm recovered devices.</p>
+    </div>
     <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">&#128202; Analyze Recovery Status</button>
-    <p style="color:#888;margin-top:10px;font-size:13px">Compares serial numbers across all uploaded files</p>
   </div>
 </div>
 
 <!-- Results -->
 <div class="card hidden" id="resultsCard">
-  <h2 style="margin-bottom:16px">&#128202; Recovery Status Results</h2>
+  <h2 style="margin-bottom:16px"><span class="step-badge" style="background:#cc0000">3</span>Recovery Status Results</h2>
   <div class="stat-row" id="statRow"></div>
+  <div class="analysis-summary" id="analysisSummary"></div>
   <div class="filter-bar">
     <label>Filter:</label>
     <select id="filterStatus" onchange="renderTable()">
@@ -526,8 +585,8 @@ tbody td input:focus,tbody td select:focus{outline:none;border-color:#cc0000}
     <table class="res-table" id="resTable">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Serial Number</th>
+          <th class="res-sticky-idx">#</th>
+          <th class="res-sticky-sn">Serial Number</th>
           <th>Model</th>
           <th>Account</th>
           <th>Source File</th>
@@ -555,6 +614,7 @@ const GRADE_OPTS = ["","A1","A2","A3","A4","A5","B1","B2","B3","B4","B5","C1","C
 const COUNTRIES = ["Argentina","Australia","Austria","Belgium","Brazil","Bulgaria","Canada","Chile","Colombia","Croatia","Czech Republic","Denmark","Finland","France","Germany","Greece","Hong Kong","Hungary","India","Indonesia","Ireland","Israel","Italy","Japan","Malaysia","Mexico","Netherlands","New Zealand","Norway","Philippines","Poland","Portugal","Romania","Russia","Saudi Arabia","Singapore","Slovakia","South Africa","South Korea","Spain","Sweden","Switzerland","Taiwan","Thailand","Turkey","Ukraine","United Arab Emirates","United Kingdom","United States","Vietnam"];
 
 let allSNs = [];
+let allSNRows = [];
 let rowIdx = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -567,6 +627,15 @@ document.addEventListener("DOMContentLoaded", () => {
   dz.addEventListener("dragleave", () => dz.classList.remove("drag"));
   dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("drag"); if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); });
   fi.addEventListener("change", e => { if(e.target.files[0]) processFile(e.target.files[0]); });
+  const ptbody = document.getElementById("ptbody");
+  if (ptbody) {
+    ptbody.addEventListener("input", e => {
+      if (e.target && e.target.matches(".f-model")) scheduleSerialNumberRefresh();
+    });
+    ptbody.addEventListener("change", e => {
+      if (e.target && e.target.matches(".f-model")) scheduleSerialNumberRefresh();
+    });
+  }
 });
 
 // ── Field alias maps ─────────────────────────────────────────────────────
@@ -603,8 +672,8 @@ const FIELD_ALIAS_DEFS = {
   },
   status: {
     label: 'Status',
-    aliases: ['Device Status', 'Device Status (Return/Extend/Buyout)', 'EOL Status'],
-    regex: /^(device\s*status(\s*\(return\/extend\/buyout\))?|eol\s*status)$/i,
+    aliases: ['Device Status', 'Device Status (Return/Extend/Buyout)', 'EOL Status', 'Status'],
+    regex: /^(device\s*status(\s*\(return\/extend\/buyout\))?|eol\s*status|status)$/i,
   },
 };
 const FIELD_ALIASES = Object.fromEntries(
@@ -617,6 +686,32 @@ function normHeader(s) {
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();
+}
+
+function normalizeSN(s) {
+  return String(s || '')
+    .replace(/[\u00a0\s]+/g, '')
+    .replace(/[-\u2010-\u2015\u2212]/g, '')
+    .trim();
+}
+
+function isExplicitNonReturnStatus(status) {
+  const s = String(status || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+  if (!s) return false;
+  return /^(extend|extension|renew|renewal|buy\s*out|buyout|keep|retain|retained|non[-\s]*return|not\s*return|not\s*returned|not\s*require\s*to\s*return|cancel|cancelled|canceled)$/i.test(s);
+}
+
+function looksLikeReturnStatus(status) {
+  const s = String(status || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+  return /\breturn\b|buy\s*out|buyout|non[-\s]*return|not\s*require\s*to\s*return|not\s*returned?/i.test(s);
 }
 
 function renderFieldAliasTooltip() {
@@ -641,13 +736,40 @@ function detectFieldMap(headers) {
   return map;
 }
 
+function refineFieldMapWithData(data, fm) {
+  if (!data || !data.length) return fm;
+  const headers = Object.keys(data[0] || {});
+  const statusCandidates = headers.filter(h => FIELD_ALIASES.status.test(String(h).trim()));
+  if (statusCandidates.length <= 1) return fm;
+
+  let bestHeader = fm.status;
+  let bestScore = -1;
+  statusCandidates.forEach(h => {
+    let score = 0;
+    for (let i = 0; i < Math.min(data.length, 500); i++) {
+      if (looksLikeReturnStatus(data[i][h])) score += 10;
+      else if (isExplicitNonReturnStatus(data[i][h])) score += 5;
+    }
+    const hn = normHeader(h);
+    if (/^(device\s*status|eol\s*status)$/.test(hn)) score += 25;
+    if (hn === 'status') score += 5;
+    if (score > bestScore) {
+      bestScore = score;
+      bestHeader = h;
+    }
+  });
+
+  if (bestHeader) return {...fm, status: bestHeader};
+  return fm;
+}
+
 function scoreSheet(data) {
   if (!data || !data.length) return 0;
   const headers = Object.keys(data[0] || {});
   const fm = detectFieldMap(headers);
   let score = data.length; // more rows = better
   if (fm.sn)    score += 1000;
-  if (fm.model || fm.pn) score += 500;
+  if (fm.model || fm.pn || fm.mtm) score += 500;
   if (fm.account) score += 50;
   return score;
 }
@@ -670,6 +792,23 @@ function trimAtGap(data, gapSize = 3) {
   return data;
 }
 
+// Scan the first maxSearch rows and return the index of the row most likely
+// to be the real header row (contains the most recognisable field names).
+// This lets us skip banner / title rows such as "Asset Recovery Services".
+function findHeaderRow(rows, maxSearch = 8) {
+  let bestRow = 0, bestScore = -1;
+  for (let i = 0; i < Math.min(rows.length, maxSearch); i++) {
+    const cells = rows[i].map(v => String(v || '').trim()).filter(Boolean);
+    const fm = detectFieldMap(cells);
+    const score = (fm.sn ? 100 : 0)
+                + (fm.model || fm.pn || fm.mtm ? 50 : 0)
+                + (fm.account ? 10 : 0)
+                + cells.length;          // tiebreak: more non-empty cells wins
+    if (score > bestScore) { bestScore = score; bestRow = i; }
+  }
+  return bestRow;
+}
+
 // Parse a sheet with gap detection.
 // Uses header:1 array mode (preserves empty rows) to find the first 3-row gap,
 // then slices and re-converts to object rows.
@@ -677,16 +816,20 @@ function parseSheetData(ws, XLSXLib, gapSize = 3) {
   const rows = XLSXLib.utils.sheet_to_json(ws, {header: 1, defval: ''});
   if (!rows.length) return [];
 
+  // Skip any title / banner rows above the real header row
+  const headerRow = findHeaderRow(rows);
+  const workRows = headerRow > 0 ? rows.slice(headerRow) : rows;
+
   // Find first gap of gapSize consecutive fully-empty rows (skip header at i=0)
   let emptyRun = 0, gapStart = -1;
-  for (let i = 1; i < rows.length; i++) {
-    const allEmpty = rows[i].every(v => v === '' || v === null || v === undefined);
+  for (let i = 1; i < workRows.length; i++) {
+    const allEmpty = workRows[i].every(v => v === '' || v === null || v === undefined);
     if (allEmpty) {
       if (emptyRun === 0) gapStart = i;
       emptyRun++;
       if (emptyRun >= gapSize) {
         // Rebuild as objects using only header + rows before gap
-        const truncated = rows.slice(0, gapStart);
+        const truncated = workRows.slice(0, gapStart);
         const tmpWs = XLSXLib.utils.aoa_to_sheet(truncated);
         return XLSXLib.utils.sheet_to_json(tmpWs, {defval: ''});
       }
@@ -694,7 +837,11 @@ function parseSheetData(ws, XLSXLib, gapSize = 3) {
       emptyRun = 0; gapStart = -1;
     }
   }
-  // No gap — return normally
+  // No gap
+  if (headerRow > 0) {
+    const tmpWs = XLSXLib.utils.aoa_to_sheet(workRows);
+    return XLSXLib.utils.sheet_to_json(tmpWs, {defval: ''});
+  }
   return XLSXLib.utils.sheet_to_json(ws, {defval: ''});
 }
 
@@ -750,6 +897,8 @@ function pickBestSheet(wb) {
 // Current workbook field map (set after parsing, used by manual mapping UI)
 let _currentWb = null;
 let _currentFname = '';
+let _currentSheetName = '';
+let _lastParsedSummaryHtml = '';
 
 function toggleSnGroup(header) {
   const arrow = header.querySelector('.sn-group-arrow');
@@ -768,6 +917,9 @@ function processFile(file) {
   if (bar) bar.classList.add("hidden");
   const uploadRow = document.getElementById("step1UploadRow");
   if (uploadRow) uploadRow.classList.remove("hidden");
+  // Always hide the manual-mapping panel at the start of a new upload
+  const mapBox = document.getElementById('manualMapBox');
+  if (mapBox) mapBox.classList.add('hidden');
   dz.classList.add("drag");
   summary.innerHTML = '<div class="summary-box" style="color:#666">&#9203; Reading file&hellip;</div>';
 
@@ -780,11 +932,12 @@ function processFile(file) {
       _currentWb = wb;
       _currentFname = file.name;
       const { data, sheetName, pivotTotal } = pickBestSheet(wb);
+      _currentSheetName = sheetName || '';
       if (!data.length) throw new Error("No data rows found in the file.");
-      const fm = detectFieldMap(Object.keys(data[0] || {}));
-      if (!fm.sn || (!fm.model && !fm.pn && !fm.mtm)) {
+      const fm = refineFieldMapWithData(data, detectFieldMap(Object.keys(data[0] || {})));
+      if (!fm.sn) {
         // Can't auto-detect — show manual mapping UI
-        showManualMapping(wb, file.name);
+        showManualMapping(wb, file.name, sheetName, 'auto');
         return;
       }
       onParsed(data, file.name, sheetName, fm, pivotTotal);
@@ -801,7 +954,26 @@ function processFile(file) {
   reader.readAsArrayBuffer(file);
 }
 
-function showManualMapping(wb, fname) {
+function openManualMapping() {
+  if (!_currentWb) {
+    alert('Please upload an .xlsx file first.');
+    return;
+  }
+  const summary = document.getElementById('summary');
+  if (summary && summary.innerHTML.trim()) _lastParsedSummaryHtml = summary.innerHTML;
+  showManualMapping(_currentWb, _currentFname, _currentSheetName, 'manual');
+  const box = document.getElementById('manualMapBox');
+  if (box) box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function cancelManualMapping() {
+  const box = document.getElementById('manualMapBox');
+  if (box) box.classList.add('hidden');
+  const summary = document.getElementById('summary');
+  if (summary && _lastParsedSummaryHtml) summary.innerHTML = _lastParsedSummaryHtml;
+}
+
+function showManualMapping(wb, fname, defaultSheetName, mode = 'auto') {
   var XLSXLib = _XLSX || window.XLSX;
   const box = document.getElementById('manualMapBox');
   box.classList.remove('hidden');
@@ -813,12 +985,16 @@ function showManualMapping(wb, fname) {
     const opt = document.createElement('option'); opt.value = n; opt.textContent = n;
     sheetSel.appendChild(opt);
   });
+  // Default to the best sheet already found by pickBestSheet, not necessarily [0]
+  if (defaultSheetName && wb.SheetNames.includes(defaultSheetName)) {
+    sheetSel.value = defaultSheetName;
+  }
 
   function populateCols() {
     const ws = wb.Sheets[sheetSel.value];
     const data = parseSheetData(ws, XLSXLib);
     const headers = data.length ? Object.keys(data[0]) : [];
-    ['mm_sn','mm_modelpn','mm_account'].forEach((id, i) => {
+    ['mm_sn','mm_modelpn','mm_account','mm_status'].forEach((id, i) => {
       const sel = document.getElementById(id);
       const first = sel.options[0].text; // keep "— select —" or "— (none) —"
       sel.innerHTML = `<option value="">${first}</option>`;
@@ -831,15 +1007,22 @@ function showManualMapping(wb, fname) {
         ? headers.find(h => FIELD_ALIASES.model.test(h.trim()))
           || headers.find(h => FIELD_ALIASES.pn.test(h.trim()))
           || headers.find(h => FIELD_ALIASES.mtm.test(h.trim()))
-        : headers.find(h => FIELD_ALIASES[id === 'mm_sn' ? 'sn' : 'account'].test(h.trim()));
+        : headers.find(h => FIELD_ALIASES[
+            id === 'mm_sn' ? 'sn' :
+            id === 'mm_account' ? 'account' :
+            'status'
+          ].test(h.trim()));
       if (suggested) sel.value = suggested;
     });
   }
   sheetSel.onchange = populateCols;
   populateCols();
 
+  const summaryText = mode === 'manual'
+    ? '&#9881; Manual mapping mode. Select a sheet and columns, then apply to re-parse this file.'
+    : '&#9888; Fields could not be auto-detected. Please map columns below.';
   document.getElementById('summary').innerHTML =
-    '<div class="summary-box" style="color:#856404">&#9888; Fields could not be auto-detected. Please map columns below.</div>';
+    '<div class="summary-box" style="color:#856404">' + summaryText + '</div>';
 }
 
 function applyManualMapping() {
@@ -855,19 +1038,25 @@ function applyManualMapping() {
     model:   modelPn,
     pn:      modelPn,
     account: document.getElementById('mm_account').value || null,
+    status:  document.getElementById('mm_status').value  || null,
   };
-  if (!fm.sn || !modelPn) {
-    alert('Please select Serial Number and Model / Part Number columns.');
+  if (!fm.sn) {
+    alert('Please select Serial Number column.');
     return;
   }
+  _currentSheetName = sheetName || '';
   document.getElementById('manualMapBox').classList.add('hidden');
   onParsed(data, _currentFname, sheetName, fm);
 }
 
 function onParsed(data, fname, sheetName, fm, pivotTotal) {
+  // Always ensure the manual-mapping panel is hidden when we have a valid parse
+  const mapBox = document.getElementById('manualMapBox');
+  if (mapBox) mapBox.classList.add('hidden');
   // fm = field map from detectFieldMap; if called without fm (legacy), auto-detect
-  if (!fm) fm = detectFieldMap(Object.keys(data[0] || {}));
+  if (!fm) fm = refineFieldMapWithData(data, detectFieldMap(Object.keys(data[0] || {})));
   if (!sheetName) sheetName = '';
+  _currentSheetName = sheetName;
 
   const get = (row, role) => {
     const key = fm[role];
@@ -878,16 +1067,17 @@ function onParsed(data, fname, sheetName, fm, pivotTotal) {
       const actualKey = Object.keys(row).find(k => normHeader(k) === wanted);
       if (actualKey) val = row[actualKey];
     }
-    return String(val || '').trim();
+    const out = String(val || '').trim();
+    return role === 'sn' ? normalizeSN(out) : out;
   };
 
   const inputRowCount = data.length;
   let rows = data;
 
-  // If the source file has a clear Return/Extend/Buyout status column, Tab 1 should
-  // only carry assets that are actually marked for return.
-  const hasReturnStatus = !!fm.status && data.some(r => /^return$/i.test(get(r, 'status')));
-  if (hasReturnStatus) rows = rows.filter(r => /^return$/i.test(get(r, 'status')));
+  // Use an exclusion model for status: remove only rows clearly marked as
+  // non-return, and keep blank / unknown statuses for user review.
+  const hasStatusColumn = !!fm.status;
+  if (hasStatusColumn) rows = rows.filter(r => !isExplicitNonReturnStatus(get(r, 'status')));
   const statusFilteredCount = inputRowCount - rows.length;
 
   const noSnCount = rows.filter(r => !get(r, 'sn')).length;
@@ -921,10 +1111,19 @@ function onParsed(data, fname, sheetName, fm, pivotTotal) {
       model = model.slice(sn.length).replace(/^\s*[-–—]\s*/, '').trim();
     }
 
-    // Group key priority: MTM > PN > model display name
-    const key = mtm || pn || model;
+    // Group key priority: MTM > PN > model display name.
+    // If the input only has SN, keep one provisional row per SN and let spec lookup
+    // backfill productName / MTM later.
+    const key = mtm || pn || model || (sn ? `__sn_only__${sn}` : '');
     if (!key) return;
-    if (!groups[key]) groups[key] = { model: model || key, mtm: mtm || pn, count: 0, sns: [], brand };
+    if (!groups[key]) groups[key] = {
+      model: model || mtm || pn || 'Pending Lenovo lookup',
+      mtm: mtm || pn,
+      count: 0,
+      sns: [],
+      brand,
+      snOnly: !(model || mtm || pn)
+    };
     groups[key].count++;
     if (sn) groups[key].sns.push(sn);
   });
@@ -933,14 +1132,17 @@ function onParsed(data, fname, sheetName, fm, pivotTotal) {
   const emptySNCount = noSnCount;
   const dupSNCount   = rows.filter(r => get(r, 'sn')).length - allSNs.length;
   let warnings = '';
-  if (hasReturnStatus && statusFilteredCount) warnings += `<div style="color:#856404">&#9888; ${statusFilteredCount} non-Return row(s) were excluded.</div>`;
+  if (hasStatusColumn && statusFilteredCount) warnings += `<div style="color:#856404">&#9888; ${statusFilteredCount} explicit non-return row(s) were excluded.</div>`;
   if (emptySNCount) warnings += `<div style="color:#856404">&#9888; ${emptySNCount} row(s) have no Serial Number and were skipped.</div>`;
   if (dupSNCount)   warnings += `<div style="color:#856404">&#9888; ${dupSNCount} duplicate SN(s) removed.</div>`;
 
   const sheetInfo = sheetName ? ` &mdash; Sheet: <em>${sheetName}</em>` : '';
-  document.getElementById("summary").innerHTML = `
+  const parsedSummaryHtml = `
     <div class="summary-box">
-      <h3>&#10003; Parsed${sheetInfo}</h3>
+      <div class="summary-head">
+        <h3>&#10003; Parsed${sheetInfo}</h3>
+        <button class="summary-map-btn" id="mapFieldsBtn" onclick="openManualMapping()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Change Mapping</button>
+      </div>
       ${warnings}
       <div class="summary-grid">
         <div class="s-item"><div class="val">${rows.length}</div><div class="lbl">Total Assets</div></div>
@@ -949,27 +1151,27 @@ function onParsed(data, fname, sheetName, fm, pivotTotal) {
         <div class="s-item"><div class="val">${accts.length}</div><div class="lbl">Account(s)</div></div>
       </div>
     </div>`;
+  _lastParsedSummaryHtml = parsedSummaryHtml;
+  document.getElementById("summary").innerHTML = parsedSummaryHtml;
   document.getElementById("ptbody").innerHTML = "";
   rowIdx = 0;
   const groupList = Object.values(groups);
-  groupList.forEach(g => addRow(g));
+  const snDetailSeen = new Set();
+  allSNRows = [];
+  groupList.forEach(g => {
+    const modelPart = [g.model, g.mtm]
+      .filter(Boolean)
+      .filter((v, i, arr) => arr.findIndex(x => String(x).toLowerCase() === String(v).toLowerCase()) === i)
+      .join(' ');
+    g.sns.forEach(sn => {
+      if (!sn || snDetailSeen.has(sn)) return;
+      snDetailSeen.add(sn);
+      allSNRows.push({ model: modelPart || g.model || g.mtm || '', sn });
+    });
+  });
+  groupList.forEach(g => addRow(g, { skipSerialRefresh: true }));
 
-  document.getElementById("snCnt").textContent = "("+allSNs.length+")";
-
-  // SN grouped display
-  const snListEl = document.getElementById("snList");
-  snListEl.innerHTML = groupList.map((g, gi) => {
-    const tags = g.sns.map(s => `<div class="sn-tag">${s}</div>`).join('');
-    const label = g.model || g.mtm || `Group ${gi+1}`;
-    return `<div class="sn-group">
-      <div class="sn-group-header" onclick="toggleSnGroup(this)">
-        <span class="sn-group-title">${esc(label)}</span>
-        <span class="sn-group-cnt">${g.sns.length} SN${g.sns.length!==1?'s':''}</span>
-        <span class="sn-group-arrow">&#9654;</span>
-      </div>
-      <div class="sn-group-tags">${tags}</div>
-    </div>`;
-  }).join('');
+  refreshSerialNumberGroups();
 
   // Collapse upload area into bar
   const dz = document.getElementById('dropZone');
@@ -1023,7 +1225,8 @@ function detectMfr(model) {
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 
-function addRow(g) {
+function addRow(g, opts) {
+  opts = opts || {};
   const idx = rowIdx++;
   const model = g?g.model:"";
   const qty   = g?g.count:1;
@@ -1041,7 +1244,7 @@ function addRow(g) {
   tr.dataset.sns  = JSON.stringify(sns);
   tr.innerHTML = `
     <td class="col-sticky-l col-seq" style="left:0">${seqNum}</td>
-    <td class="col-sticky-l" style="left:36px"><select class="f-pt">${ptSel}</select></td>
+    <td class="col-sticky-l col-product-type" style="left:36px"><select class="f-pt" title="${esc(pt)}">${ptSel}</select></td>
     <td><input type="text" class="f-mfr" value="${esc(mfr)}"></td>
     <td><input type="text" class="f-model" value="${esc(model)}"></td>
     <td><input type="number" class="f-qty" value="${qty}" min="1"></td>
@@ -1062,13 +1265,172 @@ function addRow(g) {
         ${isLen?`<button class="fetch-btn" onclick="fetchSpecs(${idx})">&#128269; Fetch</button>`:""}
       </div>
     </td>
-    <td class="col-sticky-r" style="right:0"><button class="del-btn" onclick="this.closest('tr').remove()">&#x2715;</button></td>
+    <td class="col-sticky-r" style="right:0"><button class="del-btn" onclick="removeProductRow(this)">&#x2715;</button></td>
   `;
   document.getElementById("ptbody").appendChild(tr);
+  if (!opts.skipSerialRefresh) {
+    refreshProductRowNumbers();
+    refreshSerialNumberGroups();
+  }
+}
+
+function refreshSerialNumberGroups() {
+  const snListEl = document.getElementById("snList");
+  const snCntEl = document.getElementById("snCnt");
+  if (!snListEl) return;
+
+  const groups = [...document.querySelectorAll('#ptbody tr')].map((tr, gi) => {
+    let sns = [];
+    try { sns = JSON.parse(tr.dataset.sns || '[]'); } catch(e) { sns = []; }
+    if (sns.length) syncRowQtyWithSerialNumbers(tr, sns);
+    const model = ((tr.querySelector('.f-model') || {}).value || '').trim();
+    const mtm = (tr.dataset.mtm || '').trim();
+    return { idx: tr.dataset.idx, label: model || mtm || `Group ${gi + 1}`, sns };
+  });
+
+  const count = groups.reduce((sum, g) => sum + g.sns.length, 0);
+  if (snCntEl) snCntEl.textContent = `(${count})`;
+  snListEl.innerHTML = groups.map(g => {
+    const tags = [
+      ...(g.sns.length ? g.sns.map((s, si) => `<div class="sn-tag">
+          <span class="sn-tag-text" onclick="editSerialNumberTag(this, ${g.idx}, ${si})">${esc(s)}</span>
+          <button class="sn-del" title="Delete SN" onclick="deleteSerialNumber(${g.idx}, ${si})">&times;</button>
+        </div>`) : ['<div class="sn-empty">No serial numbers assigned.</div>']),
+      `<span class="sn-add-wrap">
+        <input class="sn-edit" placeholder="Add SNs"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();appendRowSerialNumbers(${g.idx}, this)}">
+        <button class="sn-add-btn" onclick="appendRowSerialNumbers(${g.idx}, this.previousElementSibling)">Add</button>
+      </span>`
+    ].join('');
+    return `<div class="sn-group">
+      <div class="sn-group-header" onclick="toggleSnGroup(this)">
+        <span class="sn-group-title">${esc(g.label)}</span>
+        <span class="sn-group-cnt">${g.sns.length} SN${g.sns.length!==1?'s':''}</span>
+        <span class="sn-group-arrow">&#9654;</span>
+      </div>
+      <div class="sn-group-tags">${tags}</div>
+    </div>`;
+  }).join('');
+}
+
+function syncRowQtyWithSerialNumbers(tr, sns) {
+  const qty = tr && tr.querySelector ? tr.querySelector('.f-qty') : null;
+  if (qty && sns && sns.length) qty.value = sns.length;
+}
+
+function updateRowSerialNumbers(idx, value) {
+  const tr = document.querySelector(`tr[data-idx="${idx}"]`);
+  if (!tr) return;
+  const sns = String(value || '')
+    .split(/[,\s;]+/)
+    .map(normalizeSN)
+    .filter(Boolean)
+    .filter((sn, i, arr) => arr.indexOf(sn) === i);
+  tr.dataset.sns = JSON.stringify(sns);
+  syncRowQtyWithSerialNumbers(tr, sns);
+  refreshSerialNumberGroups();
+}
+
+function appendRowSerialNumbers(idx, input) {
+  if (!input) return;
+  const additions = String(input.value || '')
+    .split(/[,\s;]+/)
+    .map(normalizeSN)
+    .filter(Boolean);
+  if (!additions.length) return;
+  const existing = getRowSerialNumbers(idx);
+  setRowSerialNumbers(idx, existing.concat(additions));
+}
+
+function getRowSerialNumbers(idx) {
+  const tr = document.querySelector(`tr[data-idx="${idx}"]`);
+  if (!tr) return [];
+  try { return JSON.parse(tr.dataset.sns || '[]'); } catch(e) { return []; }
+}
+
+function setRowSerialNumbers(idx, sns) {
+  const tr = document.querySelector(`tr[data-idx="${idx}"]`);
+  if (!tr) return;
+  const clean = sns.map(normalizeSN).filter(Boolean).filter((sn, i, arr) => arr.indexOf(sn) === i);
+  tr.dataset.sns = JSON.stringify(clean);
+  syncRowQtyWithSerialNumbers(tr, clean);
+  refreshSerialNumberGroups();
+}
+
+function editSerialNumberTag(span, idx, snIndex) {
+  const oldValue = span.textContent || '';
+  const input = document.createElement('input');
+  input.className = 'sn-tag-input';
+  input.value = oldValue;
+  input.onclick = e => e.stopPropagation();
+  input.onkeydown = e => {
+    if (e.key === 'Enter') { e.preventDefault(); saveSerialNumberEdit(input, idx, snIndex); }
+    if (e.key === 'Escape') refreshSerialNumberGroups();
+  };
+  input.onblur = () => saveSerialNumberEdit(input, idx, snIndex);
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+}
+
+function saveSerialNumberEdit(input, idx, snIndex) {
+  const sns = getRowSerialNumbers(idx);
+  sns[snIndex] = input.value;
+  setRowSerialNumbers(idx, sns);
+}
+
+function deleteSerialNumber(idx, snIndex) {
+  const sns = getRowSerialNumbers(idx);
+  sns.splice(snIndex, 1);
+  setRowSerialNumbers(idx, sns);
 }
 
 // In-session spec cache: model/pn key → spec result
 const _specCache = {};
+
+function hasRealSpec(specs) {
+  return !!(specs && (specs.processor || specs.memory || specs.driveType || specs.gpu));
+}
+
+function rememberSpecCache(keys, specs) {
+  if (!specs) return;
+  keys.filter(Boolean).forEach(k => { _specCache[k] = specs; });
+}
+
+function extractLikelyLenovoMtms(text) {
+  const out = [];
+  const s = String(text || '').toUpperCase();
+  const matches = s.match(/\b(?:20|21|22|23)[A-Z0-9]{8,10}\b/g) || [];
+  matches.forEach(m => { if (!out.includes(m)) out.push(m); });
+  return out;
+}
+
+function addLookupKey(keys, value) {
+  const raw = String(value || '').trim();
+  if (!raw) return;
+  extractLikelyLenovoMtms(raw).forEach(k => keys.push(k));
+  if (!/\s/.test(raw) && raw.length <= 160) keys.push(raw.toUpperCase());
+}
+
+function getProductLookupKeys(tr) {
+  const keys = [];
+  addLookupKey(keys, tr.dataset.mtm || '');
+  addLookupKey(keys, tr.dataset.productId || '');
+  addLookupKey(keys, ((tr.querySelector('.f-model') || {}).value || ''));
+  return keys.filter((k, i, arr) => k && arr.indexOf(k) === i);
+}
+
+function ensurePasteSpecButton(tr, idx) {
+  if (!tr || tr.querySelector('.paste-spec-btn')) return;
+  const cell = tr.querySelector('.spec-cell');
+  if (!cell) return;
+  const pb = document.createElement('button');
+  pb.className = 'fetch-btn paste-spec-btn';
+  pb.style.cssText = 'margin-top:0';
+  pb.innerHTML = '&#128203; Paste Spec';
+  pb.onclick = () => openSpecModal(idx);
+  cell.appendChild(pb);
+}
 
 // Auto-fetch specs for every pending Lenovo row, concurrently (max 4 at a time)
 async function autoFetchAllSpecs() {
@@ -1117,10 +1479,11 @@ async function autoFetchAllSpecs() {
     if (i >= rows.length) return;
     const tr = rows[i++];
     const idx = parseInt(tr.dataset.idx);
-    await fetchSpecs(idx);
+    const fetchResult = await fetchSpecs(idx);
     done++;
     const b = document.getElementById('bs-'+idx);
-    if (b && (b.classList.contains('b-ok') || b.classList.contains('b-cache'))) succeed++;
+    if (fetchResult === 'ok' || fetchResult === 'cache') succeed++;
+    else if (b && (b.classList.contains('b-ok') || b.classList.contains('b-cache'))) succeed++;
     updateStatus();
     await runNext();
   }
@@ -1132,11 +1495,11 @@ async function autoFetchAllSpecs() {
 
 async function fetchSpecs(idx) {
   const tr = document.querySelector(`tr[data-idx="${idx}"]`);
-  if(!tr) return;
-  if(tr.dataset.fetching==='1') return;   // prevent concurrent fetch on same row
+  if(!tr) return 'missing';
+  if(tr.dataset.fetching==='1') return 'busy';   // prevent concurrent fetch on same row
   tr.dataset.fetching = '1';
   const sns = JSON.parse(tr.dataset.sns||"[]");
-  if(!sns.length){ tr.dataset.fetching='0'; alert("No serial number available for this group."); return; }
+  if(!sns.length){ tr.dataset.fetching='0'; alert("No serial number available for this group."); return 'no-sn'; }
 
   const btn   = tr.querySelector(".fetch-btn");
   const badge = document.getElementById("bs-"+idx);
@@ -1144,25 +1507,79 @@ async function fetchSpecs(idx) {
   badge.innerHTML = '<span class="spinner"></span> Loading';
   if(btn){btn.disabled=true; btn.textContent='Fetching';}
 
-  // Check cache first — use model name as cache key (normalised)
+  // Check cache first — prefer PN/MTM/productId cache, then model-name cache.
   const modelKey = ((tr.querySelector('.f-model')||{}).value||'').trim().toLowerCase();
-  let specs = modelKey && _specCache[modelKey] ? _specCache[modelKey] : null;
+  const productLookupKeys = getProductLookupKeys(tr);
+  const cacheKeys = [
+    ...productLookupKeys.map(k => 'lookup:' + k.toLowerCase()),
+    modelKey ? 'model:' + modelKey : ''
+  ].filter(Boolean);
+  let specs = null;
+  for (const ck of cacheKeys) {
+    if (_specCache[ck] && hasRealSpec(_specCache[ck])) {
+      specs = _specCache[ck];
+      break;
+    }
+  }
   let fromCache = !!specs;
+  let metadataCandidate = null;
+
+  if (!specs) {
+    // Prefer product-level lookup first. This avoids trying every SN when
+    // the input already provides PN / MTM.
+    for (let pi = 0; pi < productLookupKeys.length; pi++) {
+      const key = productLookupKeys[pi];
+      badge.innerHTML = '<span class="spinner"></span> Trying PN/MTM';
+      badge.title = 'Trying product key ' + key;
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      const productSpecs = await queryLenovo(key);
+      if (productSpecs) {
+        if(productSpecs._productId) tr.dataset.productId=productSpecs._productId;
+        if(productSpecs._mtm) tr.dataset.mtm=productSpecs._mtm;
+        if(productSpecs._productName) tr.dataset.productName=productSpecs._productName;
+        rememberSpecCache(['lookup:' + key.toLowerCase()], productSpecs);
+        if (hasRealSpec(productSpecs)) {
+          specs = productSpecs;
+          break;
+        }
+        metadataCandidate = metadataCandidate || productSpecs;
+      }
+    }
+  }
 
   if (!specs) {
     // Try each SN in the group until one returns specs
     for(let si=0; si<sns.length; si++){
       badge.innerHTML='<span class="spinner"></span> Trying '+(si+1)+"/"+sns.length;
-      specs = await queryLenovo(sns[si]);
-      if(specs){ if(specs._productId) tr.dataset.productId=specs._productId; if(specs._mtm) tr.dataset.mtm=specs._mtm; break; }
+      badge.title = 'Trying serial number ' + sns[si];
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      const snSpecs = await queryLenovo(sns[si]);
+      if(snSpecs){
+        if(snSpecs._productId) tr.dataset.productId=snSpecs._productId;
+        if(snSpecs._mtm) tr.dataset.mtm=snSpecs._mtm;
+        if(snSpecs._productName) tr.dataset.productName=snSpecs._productName;
+        rememberSpecCache(['sn:' + String(sns[si]).toLowerCase()], snSpecs);
+        if (hasRealSpec(snSpecs)) {
+          specs = snSpecs;
+          break;
+        }
+        metadataCandidate = metadataCandidate || snSpecs;
+        break;
+      }
     }
-    // Store in cache
-    if (specs && modelKey) _specCache[modelKey] = specs;
+    if (!specs && metadataCandidate) specs = metadataCandidate;
+    // Store real specs under all stable row keys for later rows.
+    if (specs && hasRealSpec(specs)) rememberSpecCache(cacheKeys, specs);
   }
 
   if(specs){
     if(specs._productId) tr.dataset.productId = specs._productId;
     if(specs._mtm)       tr.dataset.mtm        = specs._mtm;
+    if(specs._productName) tr.dataset.productName = specs._productName;
+    const modelInput = tr.querySelector(".f-model");
+    if(modelInput && specs._productName && (!modelInput.value || /^Pending Lenovo lookup$/i.test(modelInput.value.trim()))) {
+      modelInput.value = specs._productName;
+    }
     if(specs.processor) tr.querySelector(".f-proc").value  = specs.processor;
     if(specs.procQty)   tr.querySelector(".f-pqty").value  = specs.procQty;
     if(specs.memory)    tr.querySelector(".f-mem").value   = specs.memory;
@@ -1173,39 +1590,50 @@ async function fetchSpecs(idx) {
     if(specs.gpu)       tr.querySelector(".f-gpu").value   = specs.gpu;
     if(specs.gpuQty)    tr.querySelector(".f-gqty").value  = specs.gpuQty;
     if(specs.year)      tr.querySelector(".f-year").value  = specs.year;
-    badge.textContent = fromCache ? "Cached" : "Done";
-    badge.className   = fromCache ? "badge b-cache" : "badge b-ok";
+    if (specs._metadataOnly) {
+      badge.textContent = "Identified";
+      badge.className = "badge b-id";
+      badge.title = "Product name / MTM found; hardware specs still need Retry or Paste Spec";
+      ensurePasteSpecButton(tr, idx);
+    } else {
+      badge.textContent = fromCache ? "Cached" : "Done";
+      badge.className   = fromCache ? "badge b-cache" : "badge b-ok";
+      badge.title = fromCache ? "Loaded from this page session cache" : "Spec lookup completed";
+    }
+    mergeDuplicateProductRow(tr);
+    refreshSerialNumberGroups();
+    if(btn){btn.disabled=false; btn.innerHTML="&#128260; Retry";}
+    tr.dataset.fetching = '0';
+    return fromCache ? 'cache' : (specs._metadataOnly ? 'identified' : 'ok');
   } else {
     badge.innerHTML = '<span style="color:#cc0000;font-size:11px">&#9888; Not found</span>';
     badge.className = "badge b-err";
-    // Show paste-spec helper button
-    if (!tr.querySelector('.paste-spec-btn')) {
-      const pb = document.createElement('button');
-      pb.className = 'fetch-btn paste-spec-btn';
-      pb.style.cssText = 'margin-top:0';
-      pb.innerHTML = '&#128203; Paste Spec';
-      pb.onclick = () => openSpecModal(idx);
-      tr.querySelector('.spec-cell').appendChild(pb);
-    }
+    badge.title = "No spec found from available serial numbers";
+    ensurePasteSpecButton(tr, idx);
   }
   if(btn){btn.disabled=false; btn.innerHTML="&#128260; Retry";}
   tr.dataset.fetching = '0';
+  return 'error';
 }
 
 async function queryLenovo(sn) {
   const snU = sn.toUpperCase().trim();
 
   // ── Priority 0: local Python helper server (no CORS / WAF limits) ────────
-  // Try both localhost and 127.0.0.1 (system proxy may block one but not the other)
-  for (const host of ['localhost', '127.0.0.1']) {
+  // Use same-origin when the page is served by the helper. This avoids issuing
+  // duplicate localhost + 127.0.0.1 requests for the same lookup key.
+  const localSpecUrls = (location.protocol.startsWith('http') && location.port === '9527')
+    ? [`/spec?sn=${encodeURIComponent(snU)}`]
+    : [`http://localhost:9527/spec?sn=${encodeURIComponent(snU)}`];
+  for (const localUrl of localSpecUrls) {
     try {
       const localR = await fetch(
-        `http://${host}:9527/spec?sn=${encodeURIComponent(snU)}`,
+        localUrl,
         { signal: AbortSignal.timeout(20000) }
       );
       if (localR.ok) {
         const d = await localR.json();
-        if (d && (d.processor || d.memory || d.driveType || d.gpu)) {
+        if (d && (d.processor || d.memory || d.driveType || d.gpu || d.productName || d.mtm || d.productId)) {
           const res = {};
           if (d.processor) { res.processor = d.processor; res.procQty  = d.procQty  || 1; }
           if (d.memory)    { res.memory    = d.memory;    res.memQty   = d.memQty   || 1; }
@@ -1214,16 +1642,18 @@ async function queryLenovo(sn) {
           if (d.year)        res.year       = d.year;
           if (d.productId)   res._productId = d.productId;
           if (d.mtm)         res._mtm       = d.mtm;
+          if (d.productName) res._productName = d.productName;
+          res._metadataOnly = !(res.processor || res.memory || res.driveType || res.gpu);
           if (Object.keys(res).length > 0) {
-            console.log('[SpecServer] OK via', host, res);
+            console.log('[SpecServer] OK via', localUrl, res);
             return res;
           }
         }
       } else {
-        console.warn('[SpecServer] HTTP', localR.status, 'from', host);
+        console.warn('[SpecServer] HTTP', localR.status, 'from', localUrl);
       }
     } catch(e) {
-      console.warn('[SpecServer] fetch failed (', host, '):', e.message);
+      console.warn('[SpecServer] fetch failed (', localUrl, '):', e.message);
     }
   }
 
@@ -1289,7 +1719,7 @@ async function queryLenovo(sn) {
                  || null;
       if (specRaw) {
         result = _parseSpecPayload(specRaw, productName);
-        if (result) { result._productId = productId; result._mtm = mtm; return result; }
+        if (result) { result._productId = productId; result._mtm = mtm; result._productName = productName; result._metadataOnly = false; return result; }
       }
     } catch(e) { /* not JSON spec shape */ }
   }
@@ -1317,9 +1747,12 @@ async function queryLenovo(sn) {
     var html = await tryFetch(htmlCandidates[hi], "text/html", 22000);
     if (!html) continue;
     result = _parseSpecFromHtml(html, productName);
-    if (result) { result._productId = productId; result._mtm = mtm; return result; }
+    if (result) { result._productId = productId; result._mtm = mtm; result._productName = productName; result._metadataOnly = false; return result; }
   }
 
+  if (productName || mtm || productId) {
+    return {_productId: productId, _mtm: mtm, _productName: productName, _metadataOnly: true};
+  }
   return null;
 }
 
@@ -1492,6 +1925,102 @@ function getRowData(tr){
   };
 }
 
+function modelMergeKey(tr) {
+  const mtm = (tr.dataset.mtm || '').trim().toLowerCase();
+  if (mtm) return 'mtm:' + mtm;
+  const productName = (tr.dataset.productName || '').trim().toLowerCase();
+  if (productName) return 'name:' + productName;
+  return '';
+}
+
+function mergeDuplicateProductRow(sourceTr) {
+  const key = modelMergeKey(sourceTr);
+  if (!key) return sourceTr;
+
+  const targetTr = [...document.querySelectorAll('#ptbody tr')]
+    .find(tr => tr !== sourceTr && modelMergeKey(tr) === key);
+  if (!targetTr) return sourceTr;
+
+  let sourceSns = [], targetSns = [];
+  try { sourceSns = JSON.parse(sourceTr.dataset.sns || '[]'); } catch(e) { sourceSns = []; }
+  try { targetSns = JSON.parse(targetTr.dataset.sns || '[]'); } catch(e) { targetSns = []; }
+  const mergedSns = [...targetSns, ...sourceSns].filter((sn, i, arr) => sn && arr.indexOf(sn) === i);
+  targetTr.dataset.sns = JSON.stringify(mergedSns);
+  targetTr.dataset.mtm = targetTr.dataset.mtm || sourceTr.dataset.mtm || '';
+  targetTr.dataset.productName = targetTr.dataset.productName || sourceTr.dataset.productName || '';
+  targetTr.dataset.productId = targetTr.dataset.productId || sourceTr.dataset.productId || '';
+
+  const targetQty = targetTr.querySelector('.f-qty');
+  if (targetQty) targetQty.value = mergedSns.length || Number(targetQty.value || 0) + Number((sourceTr.querySelector('.f-qty') || {}).value || 0);
+
+  const fields = ['.f-year','.f-proc','.f-pqty','.f-mem','.f-mqty','.f-dtype','.f-dsize','.f-dqty','.f-gpu','.f-gqty'];
+  fields.forEach(cls => {
+    const target = targetTr.querySelector(cls);
+    const source = sourceTr.querySelector(cls);
+    if (target && source && !target.value && source.value) target.value = source.value;
+  });
+
+  const targetBadge = document.getElementById('bs-' + targetTr.dataset.idx);
+  const sourceBadge = document.getElementById('bs-' + sourceTr.dataset.idx);
+  if (targetBadge && sourceBadge && !targetBadge.classList.contains('b-ok') && !targetBadge.classList.contains('b-cache')) {
+    targetBadge.className = sourceBadge.className;
+    targetBadge.innerHTML = sourceBadge.innerHTML;
+    targetBadge.title = sourceBadge.title || targetBadge.title;
+  }
+
+  sourceTr.remove();
+  refreshProductRowNumbers();
+  refreshSerialNumberGroups();
+  return targetTr;
+}
+
+function refreshProductRowNumbers() {
+  document.querySelectorAll('#ptbody tr').forEach((tr, i) => {
+    const seq = tr.querySelector('.col-seq');
+    if (seq) seq.textContent = i + 1;
+  });
+}
+
+let _serialRefreshTimer = null;
+function scheduleSerialNumberRefresh() {
+  clearTimeout(_serialRefreshTimer);
+  _serialRefreshTimer = setTimeout(refreshSerialNumberGroups, 80);
+}
+
+function removeProductRow(btn) {
+  const tr = btn && btn.closest ? btn.closest('tr') : null;
+  if (!tr) return;
+  const model = ((tr.querySelector('.f-model') || {}).value || '').trim() || 'this product row';
+  let sns = [];
+  try { sns = JSON.parse(tr.dataset.sns || '[]'); } catch(e) { sns = []; }
+  const ok = confirm(`Delete ${model}?\n\nThis will also remove ${sns.length} serial number${sns.length === 1 ? '' : 's'} from the Serial Numbers section.`);
+  if (!ok) return;
+  tr.remove();
+  refreshProductRowNumbers();
+  refreshSerialNumberGroups();
+}
+
+function buildSnRowsFromProductRows(){
+  const seen = new Set();
+  const rows = [];
+  document.querySelectorAll('#ptbody tr').forEach(tr => {
+    const model = ((tr.querySelector('.f-model') || {}).value || '').trim();
+    const mtm = (tr.dataset.mtm || '').trim();
+    const modelPart = [model, mtm]
+      .filter(Boolean)
+      .filter((v, i, arr) => arr.findIndex(x => String(x).toLowerCase() === String(v).toLowerCase()) === i)
+      .join(' ');
+    let sns = [];
+    try { sns = JSON.parse(tr.dataset.sns || '[]'); } catch(e) { sns = []; }
+    sns.forEach(sn => {
+      if (!sn || seen.has(sn)) return;
+      seen.add(sn);
+      rows.push({ model: modelPart || 'Pending Lenovo lookup', sn });
+    });
+  });
+  return rows;
+}
+
 async function doGenerate(){
   const bytes=b64ToArr(TMPL_B64);
   const zip=await JSZip.loadAsync(bytes);
@@ -1535,26 +2064,19 @@ async function doGenerate(){
   }
 
   // ── SN (sheet3.xml) ──
-  if(allSNs.length>0){
+  const snRowsForExport = buildSnRowsFromProductRows();
+  if(snRowsForExport.length>0){
     let sn=await zip.file('xl/worksheets/sheet3.xml').async('string');
-    const TMPL_SN_ROWS=11;
-    // Update pre-existing rows A1-A11
-    for(let i=0;i<Math.min(allSNs.length,TMPL_SN_ROWS);i++){
-      const ref=`A${i+1}`, s=i===0?111:112;
-      sn=sn.replace(
-        new RegExp(`<c r="${ref}" s="\\d+"(?:\\s+t="[^"]*")?>(?:[\\s\\S]*?)<\\/c>`,'g'),
-        `<c r="${ref}" s="${s}" t="inlineStr"><is><t>${x$(allSNs[i])}</t></is></c>`
-      );
-    }
-    // Append extra rows beyond 11
-    if(allSNs.length>TMPL_SN_ROWS){
-      const extra=allSNs.slice(TMPL_SN_ROWS).map((s,i)=>{
-        const r=TMPL_SN_ROWS+i+1;
-        return `<row r="${r}"><c r="A${r}" s="112" t="inlineStr"><is><t>${x$(s)}</t></is></c></row>`;
-      }).join('');
-      sn=sn.replace('</sheetData>',extra+'</sheetData>');
-      sn=sn.replace(/(<dimension ref=")[^"]*(")/,`$1A1:A${allSNs.length}$2`);
-    }
+    const C=(col,r,val,s)=>`<c r="${col}${r}" s="${s}" t="inlineStr"><is><t>${x$(val)}</t></is></c>`;
+    const rowsXml = [
+      `<row r="1">${C('A',1,'Model / Part Number',111)}${C('B',1,'Serial Number',111)}</row>`,
+      ...snRowsForExport.map((item,i)=>{
+        const r=i+2;
+        return `<row r="${r}">${C('A',r,item.model,112)}${C('B',r,item.sn,112)}</row>`;
+      })
+    ].join('');
+    sn=sn.replace(/<sheetData>[\s\S]*<\/sheetData>/,`<sheetData>${rowsXml}</sheetData>`);
+    sn=sn.replace(/(<dimension ref=")[^"]*(")/,`$1A1:B${snRowsForExport.length+1}$2`);
     zip.file('xl/worksheets/sheet3.xml',sn);
   }
 
@@ -1589,6 +2111,8 @@ function b64ToArr(b64){
 let puFileList = [];  // pick-up request File objects
 let crFileList = [];  // collection report File objects
 let analysisRows = []; // final merged dataset
+let puParseInfo = [];
+let crParseInfo = [];
 
 // ── Tab switch ──────────────────────────────────────────
 function switchTab(id, btn) {
@@ -1637,12 +2161,14 @@ function evDrop(e, inputId, dropId) {
 }
 
 // ── File input handlers ─────────────────────────────────
-document.getElementById('puFiles').addEventListener('change', function() {
+document.getElementById('puFiles').addEventListener('change', async function() {
   mergeFiles(this, puFileList, 'puChips');
+  await refreshFileParseStatus('pu');
   checkAnalyzeReady();
 });
-document.getElementById('crFiles').addEventListener('change', function() {
+document.getElementById('crFiles').addEventListener('change', async function() {
   mergeFiles(this, crFileList, 'crChips');
+  await refreshFileParseStatus('cr');
   checkAnalyzeReady();
 });
 
@@ -1656,7 +2182,7 @@ function mergeFiles(input, arr, chipsId) {
 function renderChips(arr, chipsId, inputId) {
   const el = document.getElementById(chipsId);
   el.innerHTML = arr.map((f, i) =>
-    `<span class="chip">&#128196; ${f.name}
+    `<span class="chip">&#128196; ${esc(f.name)}
       <span class="rm" onclick="removeFile(${i},'${inputId}','${chipsId}')">&#10005;</span>
     </span>`
   ).join('');
@@ -1666,24 +2192,91 @@ function removeFile(idx, inputId, chipsId) {
   const arr = inputId === 'puFiles' ? puFileList : crFileList;
   arr.splice(idx, 1);
   renderChips(arr, chipsId, inputId);
+  refreshFileParseStatus(inputId === 'puFiles' ? 'pu' : 'cr');
   checkAnalyzeReady();
 }
 
 function checkAnalyzeReady() {
   const show = puFileList.length > 0 || crFileList.length > 0;
   document.getElementById('analyzeCard').style.display = show ? '' : 'none';
+  const btn = document.getElementById('analyzeBtn');
+  const hint = document.getElementById('analyzeHint');
+  if (!btn || !hint) return;
+  const ready = puFileList.length > 0 && crFileList.length > 0;
+  btn.disabled = !ready;
+  if (!ready) {
+    hint.textContent = puFileList.length
+      ? 'Upload at least one Collection Report file to compare recovered devices.'
+      : 'Upload at least one Pick-up Request file to define the requested baseline.';
+  } else {
+    hint.textContent = 'Pick-up Request serial numbers are the requested baseline. Collection Report serial numbers confirm recovered devices.';
+  }
+}
+
+function renderParseStatus(kind, infos) {
+  const el = document.getElementById(kind === 'pu' ? 'puStatus' : 'crStatus');
+  if (!el) return;
+  if (!infos.length) {
+    el.className = 'upload2-status';
+    el.innerHTML = '';
+    return;
+  }
+  const safeInfos = infos.map(info => Array.isArray(info) ? {file:'', count:info.length, rows:info, method:''} : info);
+  const unique = new Set(safeInfos.flatMap(info => (info.rows || []).map(r => r.sn))).size;
+  const hasSn = unique > 0;
+  el.className = 'upload2-status ' + (hasSn ? 'ok' : 'warn');
+  const methods = [...new Set(safeInfos.map(info => info.method).filter(Boolean))].join(', ') || 'No SN detected';
+  el.innerHTML = `
+    <div class="status-line"><span class="status-main">${safeInfos.length} file${safeInfos.length !== 1 ? 's' : ''} loaded</span><span>${unique} unique SN${unique !== 1 ? 's' : ''}</span></div>
+    <div class="status-line"><span>Detection</span><span>${esc(methods)}</span></div>
+  `;
+}
+
+async function refreshFileParseStatus(kind) {
+  const files = kind === 'pu' ? puFileList : crFileList;
+  const infos = await Promise.all(files.map(file => parseXlsxForSN(file, {withMeta:true})));
+  if (kind === 'pu') puParseInfo = infos; else crParseInfo = infos;
+  renderParseStatus(kind, infos);
+}
+
+function emptyParseResult(file, method) {
+  return {file: file ? file.name : '', count: 0, rows: [], method: method || 'No SN detected'};
+}
+
+async function getParseInfos(kind) {
+  const files = kind === 'pu' ? puFileList : crFileList;
+  let infos = kind === 'pu' ? puParseInfo : crParseInfo;
+  if (infos.length !== files.length) {
+    infos = await Promise.all(files.map(file => parseXlsxForSN(file, {withMeta:true})));
+    if (kind === 'pu') puParseInfo = infos; else crParseInfo = infos;
+    renderParseStatus(kind, infos);
+  }
+  return infos;
+}
+
+function uniqueSnCount(infos) {
+  return new Set(infos.flatMap(info => (info.rows || []).map(r => r.sn))).size;
 }
 
 // ── Parse xlsx → array of {sn, model, account, file} ───
-async function parseXlsxForSN(file) {
+function looksLikeSerialNumberValue(value) {
+  const sn = String(value || '').trim().toUpperCase();
+  if (!sn) return false;
+  if (/^(SERIAL|S\/N|SN|MANUF\.?\s*SN)$/i.test(sn)) return false;
+  return /^[A-Z0-9]{6,18}$/.test(sn) && /\d/.test(sn) && /[A-Z]/.test(sn);
+}
+
+async function parseXlsxForSN(file, options) {
+  options = options || {};
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = e => {
       try {
         var XLSXLib2 = _XLSX || window.XLSX;
-        if (!XLSXLib2) { resolve([]); return; }
+        if (!XLSXLib2) { resolve(options.withMeta ? emptyParseResult(file, 'XLSX reader unavailable') : []); return; }
         const wb = XLSXLib2.read(new Uint8Array(e.target.result), {type:'array'});
         const allRows = [];
+        let method = '';
 
         // Sort sheets: SN-dedicated sheets first
         const sheetOrder = [...wb.SheetNames].sort((a,b) => {
@@ -1724,6 +2317,7 @@ async function parseXlsxForSN(file) {
           );
 
           if (!snKey) return;
+          method = method || `${sname}: ${snKey}`;
 
           // Model column
           const modKey = findKey(kt =>
@@ -1750,10 +2344,39 @@ async function parseXlsxForSN(file) {
           });
         });
 
-        resolve(allRows);
+        // Fallback for files/sheets that are just raw SN lists without a
+        // header row, e.g. columns A/B contain PW05JAMX, PW05JD22, ...
+        if (!allRows.length) {
+          sheetOrder.forEach(sname => {
+            const ws = wb.Sheets[sname];
+            const rows = XLSXLib2.utils.sheet_to_json(ws, {header:1, defval:'', raw:false});
+            if (!rows.length) return;
+
+            const flat = [];
+            rows.forEach(row => row.forEach(value => {
+              const sn = String(value || '').trim().toUpperCase();
+              if (looksLikeSerialNumberValue(sn)) flat.push(sn);
+            }));
+
+            const unique = flat.filter((sn, i, arr) => arr.indexOf(sn) === i);
+            if (unique.length < 3) return;
+            method = method || `${sname}: raw SN list`;
+            unique.forEach(sn => allRows.push({
+              sn,
+              model: '',
+              account: '',
+              file: file.name
+            }));
+          });
+        }
+
+        const result = options.withMeta
+          ? {file: file.name, count: allRows.length, rows: allRows, method: method || 'No SN detected'}
+          : allRows;
+        resolve(result);
       } catch(err) {
         console.warn('Parse error', file.name, err);
-        resolve([]);
+        resolve(options.withMeta ? emptyParseResult(file, 'Parse error') : []);
       }
     };
     reader.readAsArrayBuffer(file);
@@ -1787,17 +2410,27 @@ async function runAnalysis() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Analyzing…';
 
-  const puRows = (await Promise.all(puFileList.map(parseXlsxForSN))).flat();
-  const crRows = (await Promise.all(crFileList.map(parseXlsxForSN))).flat();
+  const puInfos = await getParseInfos('pu');
+  const crInfos = await getParseInfos('cr');
+  const puRows = puInfos.flatMap(info => info.rows || []);
+  const crRows = crInfos.flatMap(info => info.rows || []);
+
+  if (!puRows.length) {
+    analysisRows = [];
+    document.getElementById('resultsCard').classList.add('hidden');
+    const summaryEl = document.getElementById('analysisSummary');
+    if (summaryEl) summaryEl.innerHTML = '';
+    alert('No serial numbers found in the Pick-up Request file. Please check the SN sheet or upload a Pick-up Request file with serial number details.');
+    btn.disabled = false;
+    btn.innerHTML = '&#128202; Re-Analyze';
+    return;
+  }
 
   const confirmedMap = buildConfirmedMap(crRows);
 
-  // Base = pick-up rows; fallback to collection-only if no pick-up files
-  let baseRows = puRows.length ? puRows : crRows;
-
   // De-duplicate SNs, preserve all source files
   const seen = {};
-  baseRows.forEach(r => {
+  puRows.forEach(r => {
     if (!seen[r.sn]) seen[r.sn] = {...r, sources: [r.file]};
     else if (!seen[r.sn].sources.includes(r.file)) seen[r.sn].sources.push(r.file);
   });
@@ -1813,10 +2446,29 @@ async function runAnalysis() {
   }));
 
   renderStats();
+  renderAnalysisSummary(puInfos, crInfos);
   renderTable();
-  document.getElementById('resultsCard').classList.remove('hidden');
+  const resultsCard = document.getElementById('resultsCard');
+  resultsCard.classList.remove('hidden');
+  setTimeout(() => resultsCard.scrollIntoView({behavior:'smooth', block:'start'}), 80);
   btn.disabled = false;
   btn.innerHTML = '&#128202; Re-Analyze';
+}
+
+function renderAnalysisSummary(puInfos, crInfos) {
+  const el = document.getElementById('analysisSummary');
+  if (!el) return;
+  const puUnique = uniqueSnCount(puInfos);
+  const crUnique = uniqueSnCount(crInfos);
+  const puMethods = [...new Set(puInfos.map(info => info.method).filter(Boolean))].join(', ') || 'No SN detected';
+  const crMethods = [...new Set(crInfos.map(info => info.method).filter(Boolean))].join(', ') || 'No SN detected';
+  el.innerHTML = `
+    <span class="analysis-pill">Pick-up: ${puUnique} unique SNs</span>
+    <span class="analysis-pill">Collection: ${crUnique} unique SNs</span>
+    <span class="analysis-pill">PU detection: ${esc(puMethods)}</span>
+    <span class="analysis-pill">CR detection: ${esc(crMethods)}</span>
+    <span class="analysis-pill warn">Match rule: raw SN + S-prefix compatible</span>
+  `;
 }
 
 // ── Stats ───────────────────────────────────────────────
@@ -1849,15 +2501,15 @@ function renderTable() {
   const tbody = document.getElementById('resTbody');
   tbody.innerHTML = rows.map((r, i) => `
     <tr class="${r.recovered ? 'row-ok' : 'row-pend'}">
-      <td style="color:#aaa">${i+1}</td>
-      <td><strong>${r.sn}</strong></td>
-      <td>${r.model || '—'}</td>
-      <td>${r.account || '—'}</td>
-      <td style="color:#888;font-size:12px">${r.sourceFile}</td>
+      <td class="res-sticky-idx">${i+1}</td>
+      <td class="res-sticky-sn"><strong>${r.sn}</strong></td>
+      <td>${esc(r.model || '—')}</td>
+      <td>${esc(r.account || '—')}</td>
+      <td class="file-cell" title="${esc(r.sourceFile)}">${esc(r.sourceFile)}</td>
       <td>${r.recovered
         ? '<span class="tag-ok">✅ Recovered</span>'
         : '<span class="tag-pend">⚠️ Pending</span>'}</td>
-      <td style="color:#888;font-size:12px">${r.confirmedIn || '—'}</td>
+      <td class="file-cell" title="${esc(r.confirmedIn || '')}">${esc(r.confirmedIn || '—')}</td>
     </tr>`
   ).join('');
 }
@@ -1930,8 +2582,6 @@ function openSpecModal(idx) {
   if(snEl)    snEl.textContent    = snPreview ? 'SN: ' + snPreview : '';
 
   document.getElementById('specModalBg').style.display = 'flex';
-  // Auto-open Lenovo page — user just needs to copy-paste
-  openLenovoPage();
   // Focus the textarea so user can paste immediately
   setTimeout(function(){ document.getElementById('specPasteArea').focus(); }, 200);
 }
@@ -2138,13 +2788,13 @@ function dpRender() {
     <h3>&#128203; Paste Spec — <span id="specModalTitle" style="font-weight:600"></span></h3>
     <div id="specModalSN" style="font-size:12px;color:#888;margin:-6px 0 10px"></div>
     <p style="margin:0 0 10px">
-      The <strong>Lenovo Support page has been opened</strong> in a new tab.<br>
-      1. On that page, scroll to <strong>Spec Info</strong> and click <strong>View</strong><br>
+      Click <strong>Open Lenovo Support Page</strong> only when you need to copy specs manually.<br>
+      1. On the Lenovo page, scroll to <strong>Spec Info</strong> and click <strong>View</strong><br>
       2. Select all the spec text (<kbd>Ctrl+A</kbd> / <kbd>&#8984;A</kbd> in the spec table) and copy<br>
       3. <strong>Paste here — specs apply instantly &#10549;</strong>
     </p>
     <div style="margin-bottom:8px">
-      <button class="btn-open-lenovo" id="lenovoPageBtn" onclick="openLenovoPage()">&#128260; Re-open Lenovo Page</button>
+      <button class="btn-open-lenovo" id="lenovoPageBtn" onclick="openLenovoPage()">&#128279; Open Lenovo Support Page</button>
     </div>
     <textarea id="specPasteArea" placeholder="Paste spec text here — applies automatically on paste&#10;&#10;e.g.:&#10;Processor&#10;1x Intel Core i5-1135G7&#10;Memory&#10;1x 16GB DDR4 3200&#10;Hard Drive&#10;1x 512 GB SSD PCIe NVMe"></textarea>
     <div class="spec-modal-btns">

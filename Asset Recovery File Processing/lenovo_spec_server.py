@@ -164,13 +164,28 @@ def build_spec(table, product_name=""):
     return spec if spec else None
 
 
+API_BASES = (
+    "https://pcsupport.lenovo.com/us/zc/api/v4/mse",
+    "https://pcsupport.lenovo.com/us/en/api/v4/mse",
+    "https://pcsupport.lenovo.com/api/v4/mse",
+)
+
+
+def api_urls(endpoint, product_id):
+    q = urllib.parse.quote(str(product_id).strip())
+    return [f"{base}/{endpoint}?productId={q}" for base in API_BASES]
+
+
 def query_lenovo(sn):
     sn = sn.upper().strip()
     print(f"  Querying SN: {sn}")
 
     # ── Step 1: resolve SN → product metadata ──────────────────────────────
-    url1 = f"https://pcsupport.lenovo.com/api/v4/mse/getproducts?productId={sn}"
-    raw1 = fetch(url1, HEADERS_JSON, timeout=10)
+    raw1 = None
+    for url1 in api_urls("getproducts", sn):
+        raw1 = fetch(url1, HEADERS_JSON, timeout=10)
+        if raw1:
+            break
     if not raw1:
         return {"error": "getproducts API failed"}
 
@@ -191,14 +206,11 @@ def query_lenovo(sn):
     print(f"  → productId={product_id}, MTM={mtm}, Name={name[:60]}")
 
     # ── Step 2a: try dedicated JSON spec endpoints ──────────────────────────
-    spec_apis = [
-        f"https://pcsupport.lenovo.com/api/v4/mse/getproductspec?productId={sn}",
-        f"https://pcsupport.lenovo.com/api/v4/mse/getproductspec?productId={urllib.parse.quote(product_id)}",
-    ]
+    spec_apis = []
+    spec_apis.extend(api_urls("getproductspec", sn))
+    spec_apis.extend(api_urls("getproductspec", product_id))
     if mtm:
-        spec_apis.append(
-            f"https://pcsupport.lenovo.com/api/v4/mse/getproductspec?productId={urllib.parse.quote(mtm)}"
-        )
+        spec_apis.extend(api_urls("getproductspec", mtm))
 
     for api_url in spec_apis:
         raw = fetch(api_url, HEADERS_JSON, timeout=10)
@@ -255,7 +267,12 @@ def query_lenovo(sn):
         else:
             print("  ✗ spec not found in HTML")
 
-    return {"error": "spec not found — try Paste Spec manually", "productId": product_id, "mtm": mtm}
+    return {
+        "error": "spec not found — try Paste Spec manually",
+        "productId": product_id,
+        "mtm": mtm,
+        "productName": name,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -299,16 +316,18 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
             result = None
+            last_result = None
             for sn in sns:
                 r = query_lenovo(sn.strip())
+                last_result = r
                 # Accept result if it has at least one real spec field
                 if r and any(k in r for k in ("processor", "memory", "driveType", "gpu")):
                     result = r
                     break
 
             if result is None:
-                # Return the last attempt's error (has productId / mtm if found)
-                result = query_lenovo(sns[-1]) if sns else {"error": "no SN provided"}
+                # Return the last attempt's error/metadata without querying it again.
+                result = last_result if last_result is not None else {"error": "no SN provided"}
 
             self._json(result)
             return
