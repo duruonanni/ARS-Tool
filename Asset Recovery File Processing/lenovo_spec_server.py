@@ -15,6 +15,7 @@ API:
 """
 
 import json
+import os
 import re
 import sys
 import time
@@ -24,7 +25,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 
-PORT = 9527
+PORT = int(os.environ.get("PORT", "9527"))
 
 # ---------------------------------------------------------------------------
 # Lenovo query logic

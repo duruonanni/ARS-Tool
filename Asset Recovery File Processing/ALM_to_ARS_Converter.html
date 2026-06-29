@@ -1622,7 +1622,7 @@ async function queryLenovo(sn) {
   // ── Priority 0: local Python helper server (no CORS / WAF limits) ────────
   // Use same-origin when the page is served by the helper. This avoids issuing
   // duplicate localhost + 127.0.0.1 requests for the same lookup key.
-  const localSpecUrls = (location.protocol.startsWith('http') && location.port === '9527')
+  const localSpecUrls = location.protocol.startsWith('http')
     ? [`/spec?sn=${encodeURIComponent(snU)}`]
     : [`http://localhost:9527/spec?sn=${encodeURIComponent(snU)}`];
   for (const localUrl of localSpecUrls) {
