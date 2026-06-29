@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARS Tool</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23cc0000'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='40' font-family='Arial,sans-serif' fill='white'%3E%E2%99%BB%3C/text%3E%3C/svg%3E">
+@@ARS_TOOL_VENDOR_SLOT_a7f3e9@@
+<style>
+@@ARS_TOOL_STYLES_SLOT_b2c8d1@@
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Floating Generate Button -->
+<button class="fab-gen" id="fabGen" onclick="generateARS()">&#11015; Generate Pick-up Request</button>
+<div class="sticky-top">
+<header>
+  <div class="logo">&#9851;</div>
+  <div style="flex:1">
+    <h1>Asset Recovery File Processing Assistant</h1>
+  </div>
+  <span class="ver-tag" id="verTag"></span>
+</header>
+
+<!-- Tab Navigation -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('t1',this)">&#128196; Pick-up Request Generator</button>
+  <button class="tab-btn" onclick="switchTab('t2',this)">&#128202; Recovery Status Analyzer</button>
+</div>
+</div><!-- end sticky-top -->
+
+<div id="t1" class="tab-pane active">
+<!-- Step 1 -->
+<div class="card" id="s1">
+  <h2>
+    <span class="step-badge">1</span>Upload Returned Asset List
+    <span class="info-tip" tabindex="0" aria-label="Field auto-detection rules">i
+      <span class="info-panel">
+        <strong>Auto-detected field names</strong>
+        <dl id="fieldAliasList"></dl>
+      </span>
+    </span>
+  </h2>
+  <!-- Post-upload row: file info on left, stats on right -->
+  <div id="step1UploadRow" class="step1-upload-row hidden">
+    <div id="uploadBar" class="upload-bar hidden">
+      <div class="ub-drop" onclick="document.getElementById('almFile').click()">
+        <span class="ub-drop-icon">&#128196;</span>
+        <div class="ub-drop-title">Returned Asset List</div>
+        <div class="ub-drop-sub">Click to replace file</div>
+      </div>
+      <div class="ub-meta">
+        <span class="ub-icon">&#128196;</span>
+        <span class="ub-name" id="uploadBarName"></span>
+      </div>
+    </div>
+    <div id="summary" style="flex:1"></div>
+  </div>
+  <!-- Initial drop zone (hidden after upload) -->
+  <div class="upload-area" id="dropZone" onclick="document.getElementById('almFile').click()">
+    <span class="icon">&#128194;</span>
+    <p><strong>Click to select file</strong> or drag &amp; drop here</p>
+    <small>Accepts .xlsx files &mdash; ALM Hardware export format</small>
+  </div>
+  <input type="file" id="almFile" accept=".xlsx">
+  <!-- Manual field mapping fallback -->
+  <div id="manualMapBox" class="hidden" style="margin-top:14px;padding:18px;background:#fffdf0;border:1px solid #ffd27d;border-radius:8px">
+    <div style="font-weight:700;color:#856404;margin-bottom:10px">&#9888; Could not auto-detect fields. Please map the columns manually:</div>
+    <div style="margin-bottom:10px">
+      <label style="font-size:12px;font-weight:600;color:#555">Sheet:</label>
+      <select id="mm_sheet" style="margin-left:8px;border:1px solid #ddd;border-radius:4px;padding:4px 8px;font-size:13px"></select>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#555">Serial Number column <span style="color:#cc0000">*</span></label><br>
+        <select id="mm_sn" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— select —</option></select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#555">Model / Part Number column</label><br>
+        <select id="mm_modelpn" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— select —</option></select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#555">Account / Customer Name column</label><br>
+        <select id="mm_account" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— (none) —</option></select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:#555">Status column</label><br>
+        <select id="mm_status" style="width:100%;border:1px solid #ddd;border-radius:4px;padding:5px 8px;font-size:13px;margin-top:4px"><option value="">— (none) —</option></select>
+      </div>
+    </div>
+    <div class="manual-map-actions">
+      <button onclick="applyManualMapping()" style="background:#cc0000;color:#fff;border:none;border-radius:6px;padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer">&#9654; Apply Mapping</button>
+      <button class="manual-map-cancel" onclick="cancelManualMapping()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 2 -->
+<div class="card hidden" id="s2">
+  <h2><span class="step-badge">2</span>Overview Information</h2>
+  <div class="alert ai">Fields marked <strong>*</strong> are required. <em>Customer Account Name</em> is pre-filled from your ALM data.</div>
+  <div class="form-grid">
+    <div class="fg">
+      <label>Customer Account Name <span class="req">*</span></label>
+      <input type="text" id="f_account" placeholder="e.g. Acme Corporation">
+    </div>
+    <div class="fg">
+      <label>Collection Country <span class="req">*</span></label>
+      <select id="f_country"><option value="">-- Select Country --</option></select>
+    </div>
+    <div class="fg">
+      <label>Expected Collection Date <span class="req">*</span></label>
+      <div style="display:flex;gap:4px;align-items:center">
+        <input type="text" id="f_date" placeholder="YYYY-MM-DD" maxlength="10" autocomplete="off"
+          oninput="var v=this.value.replace(/[^0-9]/g,'');if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4);if(v.length>7)v=v.slice(0,7)+'-'+v.slice(7);this.value=v.slice(0,10);this.style.borderColor=(/^\d{4}-\d{2}-\d{2}$/.test(this.value)||!this.value)?'':'#cc0000';"
+          style="flex:1">
+        <button type="button" id="dpBtn" onclick="dpToggle()" title="Pick date"
+          style="padding:0 8px;height:34px;border:1px solid #ccc;border-radius:6px;background:#f5f5f5;cursor:pointer;font-size:16px;line-height:1;flex-shrink:0">&#128197;</button>
+      </div>
+      <div id="dpPop" style="display:none;position:absolute;z-index:9999;background:#fff;border:1px solid #ccc;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.18);padding:8px;width:214px;user-select:none"></div>
+    </div>
+    <div class="fg span2">
+      <label>Collection Address <span class="req">*</span></label>
+      <textarea id="f_addr" rows="2" placeholder="Full address with ZIP code. Multiple locations separated by comma."></textarea>
+    </div>
+    <div class="fg">
+      <label>Currency <span class="req">*</span></label>
+      <select id="f_currency">
+        <option>USD</option><option>EUR</option><option>GBP</option>
+        <option selected>MYR</option><option>THB</option><option>SGD</option>
+        <option>HKD</option><option>JPY</option><option>CNY</option>
+        <option>AUD</option><option>INR</option><option>IDR</option>
+        <option>PHP</option><option>VND</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Logistics Service Type <span class="req">*</span></label>
+      <select id="f_logistics">
+        <option>Customer Pack &amp; Ship</option>
+        <option>Lenovo Pickup</option>
+        <option>Customer Delivery</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Data Security Type <span class="req">*</span></label>
+      <select id="f_datasec">
+        <option>Offsite Data Sanitization (Default)</option>
+        <option>Onsite Data Destruction</option>
+        <option>Certificate of Data Destruction Required</option>
+        <option>No Data Sanitization Required</option>
+      </select>
+    </div>
+    <div class="fg" style="grid-column-start:1">
+      <label>Special Services Request 1</label>
+      <select id="f_ss1">
+        <option>Not Required</option><option>Pallet Required</option>
+        <option>Decommission Required</option><option>Asset Tagging Required</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Special Services Request 2</label>
+      <select id="f_ss2">
+        <option>Not Required</option><option>Pallet Required</option>
+        <option>Decommission Required</option><option>Asset Tagging Required</option>
+      </select>
+    </div>
+    <div class="fg full">
+      <label>Additional Comments / Requests</label>
+      <textarea id="f_comments" rows="2" placeholder="Any additional requirements..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- Step 3 -->
+<div class="card hidden" id="s3">
+  <h2><span class="step-badge">3</span>Product Details</h2>
+  <div class="alert ai">
+    For <strong>Lenovo</strong> devices, specs are fetched <strong>automatically</strong> after file upload. If auto-fetch is blocked, click <strong>Paste Spec</strong> to enter specs via the Lenovo support page. All fields are editable.
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
+    <div id="specFetchStatus" style="flex:1">
+      <div class="sfp-head">
+        <div class="sfp-label" id="sfpLabel"></div>
+        <div class="sfp-bar-bg"><div class="sfp-bar-fill" id="sfpBar"></div></div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addRow()">+ Add Product Row</button>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-sticky-l col-seq" style="left:0">#</th>
+          <th class="col-sticky-l col-product-type" style="left:36px">Product Type</th>
+          <th style="min-width:80px">Manufacturer</th>
+          <th style="min-width:200px">Model / Part Number</th>
+          <th style="min-width:70px">Qty</th>
+          <th style="min-width:80px">Grade<br><span style="font-weight:400;font-size:9px">(e.g. A3)</span></th>
+          <th style="min-width:60px">Model Year</th>
+          <th style="min-width:220px">Processor Type &amp; Size</th>
+          <th style="min-width:50px">Proc Qty</th>
+          <th style="min-width:180px">Memory Type &amp; Size</th>
+          <th style="min-width:50px">Mem Qty</th>
+          <th style="min-width:130px">Drive Type</th>
+          <th style="min-width:80px">Drive Size</th>
+          <th style="min-width:50px">Drive Qty</th>
+          <th style="min-width:140px">GPU Type &amp; Size</th>
+          <th style="min-width:50px">GPU Qty</th>
+          <th class="col-sticky-r" style="right:46px;min-width:120px">Spec Lookup</th>
+          <th class="col-sticky-r" style="right:0;min-width:46px"></th>
+        </tr>
+      </thead>
+      <tbody id="ptbody"></tbody>
+    </table>
+  </div>
+  <div style="margin-top:22px">
+    <strong style="font-size:14px">Serial Numbers</strong>
+    <span id="snCnt" style="color:#888;font-size:13px;margin-left:6px">(0)</span>
+    <div style="font-size:11px;color:#888;margin-top:3px">All serial numbers from the ALM file &mdash; written to the SN sheet of the output file.</div>
+    <div id="snList" class="sn-list"></div>
+  </div>
+</div>
+
+<!-- Generate -->
+<div class="card hidden" id="s4">
+  <h2><span class="step-badge">4</span>Generate Pick-up Request</h2>
+  <div class="gen-wrap">
+    <div class="gen-copy">
+      <h3>Review complete. Export the submission file.</h3>
+      <p>Generate the filled ARS template after you confirm the overview information, grouped products, and returned serial numbers.</p>
+      <div class="gen-note">&#128190; Output: <span id="genNoteFilename">ARS_Template_&lt;Account&gt;_&lt;Date&gt;.xlsx</span></div>
+    </div>
+    <div class="gen-actions">
+      <button class="gen-btn" id="genBtn" onclick="generateARS()">
+        &#11015; Generate Pick-up Request
+      </button>
+    </div>
+  </div>
+</div>
+</div><!-- end t1 -->
+
+<div id="t2" class="tab-pane">
+
+<!-- Upload Row -->
+<div class="card">
+  <h2><span class="step-badge" style="background:#cc0000">1</span>Upload Pick-up Request Files</h2>
+  <div class="upload2-grid">
+    <!-- Pick-up Requests -->
+    <div>
+      <div class="upload2-box" id="puDrop" onclick="document.getElementById('puFiles').click()"
+           ondragover="evDrag(event,'puDrop')" ondragleave="evLeave('puDrop')" ondrop="evDrop(event,'puFiles','puDrop')">
+        <span class="icon">&#128196;</span>
+        <h3>Pick-up Request Files</h3>
+        <small>One or more .xlsx — asset pickup lists sent to partner</small>
+      </div>
+      <input type="file" id="puFiles" accept=".xlsx" multiple style="display:none">
+      <div class="file-chips" id="puChips"></div>
+      <div class="upload2-status" id="puStatus"></div>
+    </div>
+    <!-- Collection Reports -->
+    <div>
+      <div class="upload2-box" id="crDrop" onclick="document.getElementById('crFiles').click()"
+           ondragover="evDrag(event,'crDrop')" ondragleave="evLeave('crDrop')" ondrop="evDrop(event,'crFiles','crDrop')">
+        <span class="icon">&#9989;</span>
+        <h3>Collection Report Files</h3>
+        <small>One or more .xlsx — partner confirmed receipt lists</small>
+      </div>
+      <input type="file" id="crFiles" accept=".xlsx" multiple style="display:none">
+      <div class="file-chips" id="crChips"></div>
+      <div class="upload2-status" id="crStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Analyze Button -->
+<div class="card" id="analyzeCard" style="display:none">
+  <h2><span class="step-badge" style="background:#cc0000">2</span>Analyze Recovery Status</h2>
+  <div class="analyze-wrap">
+    <div class="analyze-copy">
+      <h3>Compare requested assets against collected assets.</h3>
+      <p id="analyzeHint">Pick-up Request serial numbers are the requested baseline. Collection Report serial numbers confirm recovered devices.</p>
+    </div>
+    <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">&#128202; Analyze Recovery Status</button>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="card hidden" id="resultsCard">
+  <h2 style="margin-bottom:16px"><span class="step-badge" style="background:#cc0000">3</span>Recovery Status Results</h2>
+  <div class="stat-row" id="statRow"></div>
+  <div class="analysis-summary" id="analysisSummary"></div>
+  <div class="filter-bar">
+    <label>Filter:</label>
+    <select id="filterStatus" onchange="renderTable()">
+      <option value="all">All Devices</option>
+      <option value="recovered">Recovered ✅</option>
+      <option value="pending">Not Yet Recovered ⚠️</option>
+    </select>
+    <input type="text" id="filterSearch" placeholder="Search SN / Model / Account…" oninput="renderTable()">
+    <button class="export-btn2" onclick="exportResults()">&#11015; Export to Excel</button>
+  </div>
+  <div class="res-wrap">
+    <table class="res-table" id="resTable">
+      <thead>
+        <tr>
+          <th class="res-sticky-idx">#</th>
+          <th class="res-sticky-sn">Serial Number</th>
+          <th>Model</th>
+          <th>Account</th>
+          <th>Source File</th>
+          <th>Status</th>
+          <th>Confirmed In</th>
+        </tr>
+      </thead>
+      <tbody id="resTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- end t2 -->
+
+</div>
+
+<!-- Paste Spec Modal -->
+<div id="specModalBg" class="spec-modal-bg" style="display:none" onclick="if(event.target===this)closeSpecModal()">
+  <div class="spec-modal">
+    <h3>&#128203; Paste Spec — <span id="specModalTitle" style="font-weight:600"></span></h3>
+    <div id="specModalSN" style="font-size:12px;color:#888;margin:-6px 0 10px"></div>
+    <p style="margin:0 0 10px">
+      Click <strong>Open Lenovo Support Page</strong> only when you need to copy specs manually.<br>
+      1. On the Lenovo page, scroll to <strong>Spec Info</strong> and click <strong>View</strong><br>
+      2. Select all the spec text (<kbd>Ctrl+A</kbd> / <kbd>&#8984;A</kbd> in the spec table) and copy<br>
+      3. <strong>Paste here — specs apply instantly &#10549;</strong>
+    </p>
+    <div style="margin-bottom:8px">
+      <button class="btn-open-lenovo" id="lenovoPageBtn" onclick="openLenovoPage()">&#128279; Open Lenovo Support Page</button>
+    </div>
+    <textarea id="specPasteArea" placeholder="Paste spec text here — applies automatically on paste&#10;&#10;e.g.:&#10;Processor&#10;1x Intel Core i5-1135G7&#10;Memory&#10;1x 16GB DDR4 3200&#10;Hard Drive&#10;1x 512 GB SSD PCIe NVMe"></textarea>
+    <div class="spec-modal-btns">
+      <button class="btn-cancel" onclick="closeSpecModal()">Cancel</button>
+      <button class="btn-parse" onclick="parseAndApplySpec()">&#10003; Apply Specs</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+@@ARS_TOOL_APP_SLOT_c4e6f0@@
+</html>

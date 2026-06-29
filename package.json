@@ -1,0 +1,19 @@
+{
+  "name": "ars-tool",
+  "version": "1.0.0",
+  "description": "Asset Recovery File Processing Assistant — ALM to ARS Pick-up Request converter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build_release.mjs",
+    "version:bump": "node scripts/bump_release_version.mjs",
+    "version:sync": "node scripts/sync_version.mjs",
+    "release:sync": "node scripts/release_sync.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node tests/build_smoke.mjs"
+  },
+  "devDependencies": {
+    "jszip": "^3.10.1",
+    "xlsx": "^0.18.5"
+  }
+}

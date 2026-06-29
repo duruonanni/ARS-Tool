@@ -1,5 +1,20 @@
 # Decisions
 
+## 2026-06-29 - Source layout and release build
+
+- Status: Active
+- Context: Monolithic `ALM_to_ARS_Converter.html` (~1.15 MB) was hard to maintain in git; enterprise PoC expects `src/` + generated `release/`.
+- Decision:
+  - **Source** under `src/ui/` (template, CSS, app.js) and `src/server/lenovo_spec_server.py`.
+  - **Build** via `npm run build` → single-file `release/index.html` (SheetJS + JSZip inlined from npm).
+  - **`release/` gitignored**; Sandbox and local use require build after clone/pull.
+  - **Version SSOT**: `package.json` `"version"`; synced to `app.js` and shown in UI `#verTag`.
+  - **Archive**: original HTML frozen at `archive/ALM_to_ARS_Converter.html`.
+  - **Publish**: `scripts/publish-static.sh` rsyncs `release/index.html`.
+- Consequence:
+  - AWP deploy adds `npm ci && npm run release:sync` before `publish-static.sh`.
+  - Local launcher: `scripts/Start_Spec_Server.bat`.
+
 ## 2026-06-29 - Sandbox deploy profile
 
 - Status: Active

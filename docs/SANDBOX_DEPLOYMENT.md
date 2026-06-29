@@ -1,8 +1,7 @@
 # ARS Tool — xCloud Sandbox Deployment
 
 Status: **Active**  
-Last updated: **2026-06-29**  
-Profile: **B** (static HTML + Python spec API)
+Last updated: **2026-06-29**
 
 Generic procedures: `@xcloud-awp-deploy` skill (`references/sandbox-standard.md`)  
 Checklists: skill `assets/checklists/xcloud_awp_*.md`
@@ -34,8 +33,8 @@ Browser :8093
     │
     ▼
 1Panel OpenResty (site code ars-tool)
-    ├── /              → index.html (ALM_to_ARS_Converter)
-    └── /spec, /health → reverse proxy → 127.0.0.1:3004 (lenovo_spec_server.py)
+    ├── /              → index.html (built from src/ui)
+    └── /spec, /health → reverse proxy → 127.0.0.1:3004 (src/server/lenovo_spec_server.py)
 ```
 
 | 目录 | 用途 |
@@ -56,7 +55,15 @@ cd /opt/ars-tool
 git clone https://gitlab.xpaas.lenovo.com/kongxiang2/ars-tool.git .
 ```
 
-### 2. 1Panel static site
+### 2. Build UI + 1Panel static site
+
+`release/index.html` is **not** committed — build on the server after clone/pull:
+
+```bash
+cd /opt/ars-tool
+npm ci
+npm run release:sync    # patch-bump version + build; or ARS_SKIP_VERSION_BUMP=1 npm run build
+```
 
 **网站 → 创建网站** → **静态网站**
 
@@ -76,7 +83,7 @@ curl -I http://10.62.81.112:8093/
 
 ```bash
 cd /opt/ars-tool
-PORT=3004 python3 "Asset Recovery File Processing/lenovo_spec_server.py" &
+PORT=3004 python3 src/server/lenovo_spec_server.py &
 curl http://127.0.0.1:3004/health
 # stop foreground trial, then configure 1Panel process guard: ars-tool-api
 ```
@@ -106,14 +113,18 @@ Supervisor env: `PORT=3004`, working directory `/opt/ars-tool`.
 ```bash
 cd /opt/ars-tool
 git pull origin main
-bash scripts/publish-static.sh          # when HTML changed
-# 1Panel → restart ars-tool-api        # when lenovo_spec_server.py changed
+npm ci
+npm run release:sync                    # or ARS_SKIP_VERSION_BUMP=1 npm run build
+bash scripts/publish-static.sh          # publishes release/index.html
+# 1Panel → restart ars-tool-api        # when src/server/lenovo_spec_server.py changed
 ```
 
 ---
 
 ## Project-specific notes
 
-- No `npm ci` — Python stdlib only for the API.
+- **Node required on AWP** for `npm ci` + `npm run build` (devDependencies: `xlsx`, `jszip`).
+- `release/` is gitignored; always build before `publish-static.sh`.
+- Version SSOT: `package.json`; UI shows `vX.Y.Z` in the header.
 - Local dev uses port `9527`; Sandbox uses `PORT=3004`.
 - Sample workbooks under `data/` are for manual testing only.

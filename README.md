@@ -2,27 +2,48 @@
 
 Local browser tool for LOT / operations teams: convert ALM or customer asset lists into ARS Pick-up Request format and analyze recovery status.
 
-## Components
+## Project layout
 
 | Path | Role |
 |------|------|
-| `Asset Recovery File Processing/ALM_to_ARS_Converter.html` | Single-page UI (SheetJS / JSZip) |
-| `Asset Recovery File Processing/lenovo_spec_server.py` | Local Python spec lookup API (bypasses CORS / WAF) |
-| `Asset Recovery File Processing/Start_Spec_Server.bat` | Windows launcher |
+| `src/ui/` | Editable HTML template, CSS, and app JavaScript |
+| `src/server/lenovo_spec_server.py` | Local Python spec lookup API (bypasses CORS / WAF) |
+| `scripts/` | Build, version bump, publish, local launchers |
+| `release/index.html` | **Generated** single-file UI (`file://` + Sandbox); not in git |
+| `archive/` | Frozen backup of the original monolithic HTML |
 | `data/` | Sample input / output workbooks for testing |
 
-## Local use (Windows)
+Version SSOT: `package.json` `"version"` (shown in UI header as `verTag`).
 
-1. `cd "Asset Recovery File Processing"`
-2. `python lenovo_spec_server.py` (listens on `http://localhost:9527`)
-3. Open `ALM_to_ARS_Converter.html` in a browser, or run `Start_Spec_Server.bat`
+## Build and run (Windows)
+
+```bash
+npm install
+npm run build          # → release/index.html
+```
+
+1. `scripts\Start_Spec_Server.bat` — starts Python API and opens `release/index.html`
+2. Or: `cd src\server` → `python lenovo_spec_server.py` (port `9527`)
+3. Open `release\index.html` in a browser
+
+Hosted pages use same-origin `/spec`; `file://` uses `http://localhost:9527`.
+
+## Release commands
+
+| Command | Purpose |
+|---------|---------|
+| `npm run build` | Sync version + build `release/index.html` |
+| `npm run version:bump` | Patch-bump `package.json` + sync `app.js` |
+| `npm run release:sync` | Bump (unless `ARS_SKIP_VERSION_BUMP=1`) + build |
+| `npm run check` | `py_compile` server + build smoke test |
 
 ## xCloud Sandbox (Profile B)
 
 - **WEB_PORT** `8093` · **API_PORT** `3004` · **SITE_CODE** `ars-tool`
 - Source on server: `/opt/ars-tool`
 - GitLab: `https://gitlab.xpaas.lenovo.com/kongxiang2/ars-tool`
-- Deploy guide: [`docs/SANDBOX_DEPLOYMENT.md`](docs/SANDBOX_DEPLOYMENT.md)
+- Deploy: `npm ci && npm run release:sync` then `scripts/publish-static.sh`
+- Guide: [`docs/SANDBOX_DEPLOYMENT.md`](docs/SANDBOX_DEPLOYMENT.md)
 
 ## Remotes
 
