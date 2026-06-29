@@ -29,7 +29,8 @@ const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))
 
 const checks = [
   [`const VERSION = '${pkg.version}'`, 'VERSION constant'],
-  ['id="verTag"', 'verTag element'],
+  [`id="verTag">v${pkg.version}<`, 'verTag visible text'],
+  ['.ver-tag{', 'ver-tag CSS'],
   ['function generateARS', 'generateARS'],
   ['location.protocol.startsWith', 'spec URL routing'],
   ['window.XLSX', 'SheetJS global'],

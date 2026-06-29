@@ -6,7 +6,7 @@ Last updated: 2026-06-29
 ## Current state
 
 - **Restructured** to `src/ui/` + `src/server/` + npm build → `release/index.html` (gitignored).
-- Version **v1.0.0** in `package.json`; header shows `verTag`.
+- Version **v1.0.0** in `package.json`; header `verTag` shows version at build time (HTML + JS).
 - Original monolith backed up at `archive/ALM_to_ARS_Converter.html`.
 - GitLab `kongxiang2/ars-tool` — Profile **B** (WEB `:8093`, API `:3004`).
 - `scripts/publish-static.sh` publishes `release/index.html`.

@@ -28,6 +28,7 @@ const jszipJs = readVendor([
   'jszip/dist/jszip.min.js',
 ]);
 
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const template = fs.readFileSync(path.join(root, 'src', 'ui', 'index.template.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'src', 'ui', 'styles.css'), 'utf8').trim();
 const appJs = fs.readFileSync(path.join(root, 'src', 'ui', 'app.js'), 'utf8').trim();
@@ -37,6 +38,7 @@ const vendorBlock = `<script>\n${xlsxJs}\n</script>\n<script>\n${jszipJs}\n</scr
 const PLACEHOLDER_VENDOR = '@@ARS_TOOL_VENDOR_SLOT_a7f3e9@@';
 const PLACEHOLDER_STYLES = '@@ARS_TOOL_STYLES_SLOT_b2c8d1@@';
 const PLACEHOLDER_APP = '@@ARS_TOOL_APP_SLOT_c4e6f0@@';
+const PLACEHOLDER_VERSION = '@@ARS_TOOL_VERSION_SLOT_d8e2a1@@';
 
 function spliceOnce(text, marker, insertion) {
   const i = text.indexOf(marker);
@@ -49,6 +51,7 @@ function spliceOnce(text, marker, insertion) {
 
 let out = spliceOnce(template, PLACEHOLDER_VENDOR, vendorBlock);
 out = spliceOnce(out, PLACEHOLDER_STYLES, css);
+out = spliceOnce(out, PLACEHOLDER_VERSION, pkg.version);
 out = spliceOnce(out, PLACEHOLDER_APP, `<script>\n${appJs}\n</script>`);
 
 const releasePath = path.join(root, 'release', 'index.html');
